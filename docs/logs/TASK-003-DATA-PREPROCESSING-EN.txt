@@ -1,0 +1,263 @@
+python morphology/services/preprocessing/en_preprocessing.py
+================================================================================
+ENGLISH MORPHOLOGICAL DATA PREPROCESSING PIPELINE - DEMO
+================================================================================  
+
+📂 Datasets path: C:\Diploma\morphology\services\preprocessing\..\datasets\english
+
+----------------------------------------
+1. LOADING DATASETS
+----------------------------------------
+
+✅ UD English EWT loaded:
+   name: UD_English-EWT
+   train_sentences: 12544
+   dev_sentences: 2001
+   test_sentences: 2077
+   train_tokens: 204577
+   dev_tokens: 25147
+   test_tokens: 25094
+
+✅ UD English GUM loaded:
+   name: UD_English-GUM
+   train_sentences: 10224
+   dev_sentences: 1575
+   test_sentences: 1464
+   train_tokens: 177410
+   dev_tokens: 28119
+   test_tokens: 28397
+
+----------------------------------------
+2. PARSED SENTENCE EXAMPLE
+----------------------------------------
+
+📝 Sentence ID: weblog-juancole.com_juancole_20051126063000_ENG_20051126_063000-0001
+📝 Original text: Al-Zaman : American forces killed Shaikh Abdullah al-Ani, the preacher at the mosque in the town of Qaim, near the Syrian border.
+
+Token           Lemma           UPOS     FEATS                          Label
+------------------------------------------------------------------------------------------
+Al              Al              PROPN    Number=Sing                    PROPN|Number=Sing
+-               -               PUNCT    _                              PUNCT|_
+Zaman           Zaman           PROPN    Number=Sing                    PROPN|Number=Sing
+:               :               PUNCT    _                              PUNCT|_
+American        American        ADJ      Degree=Pos                     ADJ|Degree=Pos
+forces          force           NOUN     Number=Plur                    NOUN|Number=Plur
+killed          kill            VERB     Mood=Ind|Number=Plur|Person... VERB|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin
+Shaikh          Shaikh          PROPN    Number=Sing                    PROPN|Number=Sing
+Abdullah        Abdullah        PROPN    Number=Sing                    PROPN|Number=Sing
+al              al              PROPN    Number=Sing                    PROPN|Number=Sing
+... and 19 more tokens
+
+----------------------------------------
+3. LABEL GENERATION EXAMPLES
+----------------------------------------
+
+UPOS     FEATS                          Generated Label
+------------------------------------------------------------
+VERB     Tense=Past|Number=Sing         VERB|Tense=Past|Number=Sing
+NOUN     Number=Plur                    NOUN|Number=Plur
+DET      Definite=Def|PronType=Art      DET|Definite=Def|PronType=Art
+PUNCT    _                              PUNCT|_
+ADJ      Degree=Pos                     ADJ|Degree=Pos
+
+----------------------------------------
+4. LABEL VOCABULARY
+----------------------------------------
+
+📊 Unique labels in training set: 323
+
+First 10 labels:
+   0: ADJ|Abbr=Yes|Degree=Pos
+   1: ADJ|Degree=Cmp
+   2: ADJ|Degree=Cmp|ExtPos=ADV
+   3: ADJ|Degree=Cmp|Typo=Yes
+   4: ADJ|Degree=Pos
+   5: ADJ|Degree=Pos|ExtPos=ADP
+   6: ADJ|Degree=Pos|ExtPos=ADP|Typo=Yes
+   7: ADJ|Degree=Pos|ExtPos=SCONJ
+   8: ADJ|Degree=Pos|NumForm=Combi|NumType=Ord
+   9: ADJ|Degree=Pos|NumForm=Word|NumType=Frac
+
+----------------------------------------
+5. LABEL STATISTICS
+----------------------------------------
+
+📊 Total tokens: 204577
+📊 Unique labels: 323
+📊 Unique UPOS tags: 17
+
+🏷️ UPOS distribution:
+   NOUN    :    34751 (17.0%)
+   PUNCT   :    23596 (11.5%)
+   VERB    :    22576 (11.0%)
+   PRON    :    18677 (9.1%)
+   ADP     :    17714 (8.7%)
+   DET     :    16299 (8.0%)
+   ADJ     :    13136 (6.4%)
+   AUX     :    12815 (6.3%)
+   PROPN   :    12620 (6.2%)
+   ADV     :    10172 (5.0%)
+   CCONJ   :     6687 (3.3%)
+   PART    :     5748 (2.8%)
+   NUM     :     4126 (2.0%)
+   SCONJ   :     3819 (1.9%)
+   SYM     :      746 (0.4%)
+   INTJ    :      695 (0.3%)
+   X       :      400 (0.2%)
+
+🏷️ Top 10 labels:
+   NOUN|Number=Sing                        : 26043
+   PUNCT|_                                 : 23594
+   ADP|_                                   : 17502
+   ADJ|Degree=Pos                          : 11805
+   PROPN|Number=Sing                       : 11627
+   DET|Definite=Def|PronType=Art           : 9064
+   NOUN|Number=Plur                        : 8192
+   VERB|VerbForm=Inf                       : 6919
+   ADV|_                                   : 6893
+   CCONJ|_                                 : 6657
+
+----------------------------------------
+6. PREPARED DATA FOR TRANSFORMERS
+----------------------------------------
+
+Example prepared data (first 3 sentences):
+
+📌 Example 1:
+   Tokens: ['Al', '-', 'Zaman', ':', 'American']...
+   Labels: ['PROPN|Number=Sing', 'PUNCT|_', 'PROPN|Number=Sing', 'PUNCT|_', 'ADJ|Degree=Pos']...
+   Label IDs: [248, 254, 248, 254, 4]...
+   Lengths match: True
+
+📌 Example 2:
+   Tokens: ['[', 'This', 'killing', 'of', 'a']...
+   Labels: ['PUNCT|_', 'DET|Number=Sing|PronType=Dem', 'NOUN|Number=Sing', 'ADP|_', 'DET|Definite=Ind|PronType=Art']...
+   Label IDs: [254, 104, 132, 21, 98]...
+   Lengths match: True
+
+📌 Example 3:
+   Tokens: ['DPA', ':', 'Iraqi', 'authorities', 'announced']...
+   Labels: ['PROPN|Number=Sing', 'PUNCT|_', 'ADJ|Degree=Pos', 'NOUN|Number=Plur', 'VERB|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin']...
+   Label IDs: [248, 254, 4, 124, 286]...
+   Lengths match: True
+
+================================================================================
+DEMO COMPLETE
+================================================================================
+PS C:\Diploma>
+
+
+
+
+   Label IDs: [254, 104, 132, 21, 98]...
+   Lengths match: True
+
+📌 Example 3:
+   Tokens: ['DPA', ':', 'Iraqi', 'authorities', 'announced']...
+   Labels: ['PROPN|Number=Sing', 'PUNCT|_', 'ADJ|Degree=Pos', 'NOUN|Number=Plur', 'VERB|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin']...
+   Label IDs: [248, 254, 4, 124, 286]...
+   Lengths match: True
+
+================================================================================
+DEMO COMPLETE
+================================================================================
+PS C:\Diploma>
+
+
+
+   Label IDs: [254, 104, 132, 21, 98]...
+   Lengths match: True
+
+📌 Example 3:
+   Tokens: ['DPA', ':', 'Iraqi', 'authorities', 'announced']...
+   Labels: ['PROPN|Number=Sing', 'PUNCT|_', 'ADJ|Degree=Pos', 'NOUN|Number=Plur', 'VERB|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin']...
+   Label IDs: [248, 254, 4, 124, 286]...
+   Lengths match: True
+
+================================================================================
+DEMO COMPLETE
+================================================================================
+PS C:\Diploma>
+
+
+   Label IDs: [254, 104, 132, 21, 98]...
+   Lengths match: True
+
+📌 Example 3:
+   Tokens: ['DPA', ':', 'Iraqi', 'authorities', 'announced']...
+   Labels: ['PROPN|Number=Sing', 'PUNCT|_', 'ADJ|Degree=Pos', 'NOUN|Number=Plur', 'VERB|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin']...
+   Label IDs: [248, 254, 4, 124, 286]...
+   Lengths match: True
+
+================================================================================
+DEMO COMPLETE
+================================================================================
+   Label IDs: [254, 104, 132, 21, 98]...
+   Lengths match: True
+
+📌 Example 3:
+   Tokens: ['DPA', ':', 'Iraqi', 'authorities', 'announced']...
+   Labels: ['PROPN|Number=Sing', 'PUNCT|_', 'ADJ|Degree=Pos', 'NOUN|Number=Plur', 'VERB|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin']...
+   Label IDs: [248, 254, 4, 124, 286]...
+   Lengths match: True
+
+================================================================================
+DEMO COMPLETE
+   Label IDs: [254, 104, 132, 21, 98]...
+   Lengths match: True
+
+📌 Example 3:
+   Tokens: ['DPA', ':', 'Iraqi', 'authorities', 'announced']...
+   Labels: ['PROPN|Number=Sing', 'PUNCT|_', 'ADJ|Degree=Pos', 'NOUN|Number=Plur', 'VERB|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin']...
+   Label IDs: [248, 254, 4, 124, 286]...
+   Lengths match: True
+
+   Label IDs: [254, 104, 132, 21, 98]...
+   Lengths match: True
+
+📌 Example 3:
+   Tokens: ['DPA', ':', 'Iraqi', 'authorities', 'announced']...
+   Labels: ['PROPN|Number=Sing', 'PUNCT|_', 'ADJ|Degree=Pos', 'NOUN|Number=Plur', 'VERB|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin']...
+   Label IDs: [248, 254, 4, 124, 286]...
+   Lengths match: True
+   Label IDs: [254, 104, 132, 21, 98]...
+   Lengths match: True
+
+📌 Example 3:
+   Tokens: ['DPA', ':', 'Iraqi', 'authorities', 'announced']...
+   Labels: ['PROPN|Number=Sing', 'PUNCT|_', 'ADJ|Degree=Pos', 'NOUN|Number=Plur', 'VERB|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin']...
+   Label IDs: [254, 104, 132, 21, 98]...
+   Lengths match: True
+
+📌 Example 3:
+   Tokens: ['DPA', ':', 'Iraqi', 'authorities', 'announced']...
+   Labels: ['PROPN|Number=Sing', 'PUNCT|_', 'ADJ|Degree=Pos', 'NOUN|Number=Plur', 'VERB|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin']...
+   Label IDs: [254, 104, 132, 21, 98]...
+   Lengths match: True
+
+📌 Example 3:
+   Tokens: ['DPA', ':', 'Iraqi', 'authorities', 'announced']...
+   Label IDs: [254, 104, 132, 21, 98]...
+   Lengths match: True
+
+📌 Example 3:
+   Label IDs: [254, 104, 132, 21, 98]...
+   Lengths match: True
+   Label IDs: [254, 104, 132, 21, 98]...
+   Lengths match: True
+
+   Label IDs: [254, 104, 132, 21, 98]...
+   Lengths match: True
+   Label IDs: [254, 104, 132, 21, 98]...
+   Label IDs: [254, 104, 132, 21, 98]...
+   Lengths match: True
+
+📌 Example 3:
+   Tokens: ['DPA', ':', 'Iraqi', 'authorities', 'announced']...
+   Labels: ['PROPN|Number=Sing', 'PUNCT|_', 'ADJ|Degree=Pos', 'NOUN|Number=Plur', 'VERB|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin']...
+   Label IDs: [248, 254, 4, 124, 286]...
+   Lengths match: True
+
+================================================================================
+DEMO COMPLETE
+================================================================================
