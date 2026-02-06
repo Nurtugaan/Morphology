@@ -1,0 +1,197 @@
+/content/morphology
+/content/morphology/services/training/models/train_distilbert.py:11: SyntaxWarning: invalid escape sequence '\D'
+  cd c:\Diploma\morphology
+
+============================================================
+  Training: distilbert-base-uncased
+  Output:   services/models/en/distilbert
+============================================================
+Random seed set to 42
+Using device: cuda
+
+============================================================
+Loading Data
+============================================================
+
+Loading UD English EWT from services/datasets/english/UD_English-EWT...
+{'name': 'UD_English-EWT', 'train_sentences': 12544, 'dev_sentences': 2001, 'test_sentences': 2077, 'train_tokens': 204577, 'dev_tokens': 25147, 'test_tokens': 25094}
+
+Loading UD English GUM from services/datasets/english/UD_English-GUM...
+{'name': 'UD_English-EWT', 'train_sentences': 10224, 'dev_sentences': 1575, 'test_sentences': 1464, 'train_tokens': 177410, 'dev_tokens': 28119, 'test_tokens': 28397}
+
+Combining datasets...
+
+Building label vocabulary...
+  Total unique labels: 406
+
+============================================================
+Training Configuration
+============================================================
+  model_name: distilbert-base-uncased
+  output_dir: services/models/en/distilbert
+  learning_rate: 3e-05
+  batch_size: 32
+  epochs: 6
+  max_length: 128
+  warmup_ratio: 0.1
+  weight_decay: 0.01
+  gradient_accumulation_steps: 2
+  max_grad_norm: 1.0
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_epsilon: 1e-08
+  dropout: 0.1
+  seed: 42
+  fp16: False
+  logging_steps: 100
+  save_strategy: epoch
+  evaluation_strategy: epoch
+  early_stopping_patience: 3
+  early_stopping_threshold: 0.001
+  device: cuda
+
+Loading tokenizer: distilbert-base-uncased...
+config.json: 100% 483/483 [00:00<00:00, 2.20MB/s]
+tokenizer_config.json: 100% 48.0/48.0 [00:00<00:00, 257kB/s]
+vocab.txt: 100% 232k/232k [00:00<00:00, 2.36MB/s]
+tokenizer.json: 100% 466k/466k [00:00<00:00, 2.06MB/s]
+
+Creating datasets...
+  Train batches: 712
+  Val batches: 112
+  Test batches: 111
+
+Creating model...
+model.safetensors: 100% 268M/268M [00:02<00:00, 92.5MB/s]
+Loading weights: 100% 100/100 [00:00<00:00, 2977.64it/s, Materializing param=transformer.layer.5.sa_layer_norm.weight]
+DistilBertModel LOAD REPORT from: distilbert-base-uncased
+Key                     | Status     |  | 
+------------------------+------------+--+-
+vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_transform.bias    | UNEXPECTED |  | 
+vocab_transform.weight  | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+✓ Model created: distilbert-base-uncased
+  Trainable parameters: 66,675,094
+  Number of labels: 406
+  Device: cuda
+Trainer initialized:
+  Device: cuda
+  Total steps: 2136
+  Warmup steps: 213
+  Output dir: services/models/en/distilbert
+
+============================================================
+Starting Training
+============================================================
+Epoch 1/6: 100% 712/712 [03:24<00:00,  3.48it/s, loss=1.9124, lr=2.78e-05]
+
+Epoch 1/6 completed in 221.9s
+  Train Loss: 1.9124
+  Val Loss:   0.2901
+  Accuracy:   0.9266
+  Precision:  0.4151
+  Recall:     0.3816
+  F1:         0.3844
+Writing model shards: 100% 1/1 [00:00<00:00,  1.26it/s]
+✓ Model saved to services/models/en/distilbert/best_model
+  ✓ New best model saved! F1: 0.3844
+Writing model shards: 100% 1/1 [00:00<00:00,  1.08it/s]
+✓ Model saved to services/models/en/distilbert/last_checkpoint
+Epoch 2/6: 100% 712/712 [03:29<00:00,  3.41it/s, loss=0.2218, lr=2.22e-05]
+
+Epoch 2/6 completed in 226.3s
+  Train Loss: 0.2218
+  Val Loss:   0.2227
+  Accuracy:   0.9400
+  Precision:  0.4970
+  Recall:     0.4978
+  F1:         0.4889
+Writing model shards: 100% 1/1 [00:00<00:00,  1.55it/s]
+✓ Model saved to services/models/en/distilbert/best_model
+  ✓ New best model saved! F1: 0.4889
+Writing model shards: 100% 1/1 [00:01<00:00,  1.82s/it]
+✓ Model saved to services/models/en/distilbert/last_checkpoint
+Epoch 3/6: 100% 712/712 [03:28<00:00,  3.41it/s, loss=0.1579, lr=1.67e-05]
+
+Epoch 3/6 completed in 226.3s
+  Train Loss: 0.1579
+  Val Loss:   0.2062
+  Accuracy:   0.9455
+  Precision:  0.5529
+  Recall:     0.5381
+  F1:         0.5365
+Writing model shards: 100% 1/1 [00:06<00:00,  6.53s/it]
+✓ Model saved to services/models/en/distilbert/best_model
+  ✓ New best model saved! F1: 0.5365
+Writing model shards: 100% 1/1 [00:47<00:00, 47.04s/it]
+✓ Model saved to services/models/en/distilbert/last_checkpoint
+Epoch 4/6: 100% 712/712 [03:28<00:00,  3.41it/s, loss=0.1273, lr=1.11e-05]
+
+Epoch 4/6 completed in 226.1s
+  Train Loss: 0.1273
+  Val Loss:   0.1997
+  Accuracy:   0.9482
+  Precision:  0.5677
+  Recall:     0.5630
+  F1:         0.5569
+Writing model shards: 100% 1/1 [00:06<00:00,  6.55s/it]
+✓ Model saved to services/models/en/distilbert/best_model
+  ✓ New best model saved! F1: 0.5569
+Writing model shards: 100% 1/1 [00:20<00:00, 20.64s/it]
+✓ Model saved to services/models/en/distilbert/last_checkpoint
+Epoch 5/6: 100% 712/712 [03:28<00:00,  3.41it/s, loss=0.1087, lr=5.55e-06]
+
+Epoch 5/6 completed in 226.2s
+  Train Loss: 0.1087
+  Val Loss:   0.1994
+  Accuracy:   0.9498
+  Precision:  0.5776
+  Recall:     0.5701
+  F1:         0.5645
+Writing model shards: 100% 1/1 [00:15<00:00, 15.50s/it]
+✓ Model saved to services/models/en/distilbert/best_model
+  ✓ New best model saved! F1: 0.5645
+Writing model shards: 100% 1/1 [00:07<00:00,  7.89s/it]
+✓ Model saved to services/models/en/distilbert/last_checkpoint
+Epoch 6/6: 100% 712/712 [03:29<00:00,  3.41it/s, loss=0.0982, lr=0.00e+00]
+                                                 
+Epoch 6/6 completed in 226.3s
+  Train Loss: 0.0982
+  Val Loss:   0.2005
+  Accuracy:   0.9498
+  Precision:  0.5856
+  Recall:     0.5829
+  F1:         0.5768
+Writing model shards: 100% 1/1 [00:07<00:00,  7.56s/it]
+✓ Model saved to services/models/en/distilbert/best_model
+  ✓ New best model saved! F1: 0.5768
+Writing model shards: 100% 1/1 [00:39<00:00, 39.66s/it]
+✓ Model saved to services/models/en/distilbert/last_checkpoint
+Training history saved to services/models/en/distilbert/training_history.json
+
+============================================================
+Training Completed!
+============================================================
+Total time: 25.9 minutes
+Best F1: 0.5768 (Epoch 6)
+Model saved to: services/models/en/distilbert
+
+Evaluating on test set...
+
+Evaluating on test set...
+Testing: 100% 111/111 [00:16<00:00,  6.62it/s]
+
+Test Results:
+  Accuracy:  0.9489
+  Precision: 0.5992
+  Recall:    0.5932
+  F1:        0.5884
+
+✓ distilbert training complete!
+  Best F1: 0.5768
+  Model saved to: services/models/en/distilbert

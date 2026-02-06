@@ -1,0 +1,186 @@
+/content/morphology
+/content/morphology/services/training/models/train_bert.py:8: SyntaxWarning: invalid escape sequence '\D'
+  cd c:\Diploma\morphology
+
+============================================================
+  Training: bert-base-uncased
+  Output:   services/models/en/bert-base
+============================================================
+Random seed set to 42
+Using device: cuda
+
+============================================================
+Loading Data
+============================================================
+
+Loading UD English EWT from services/datasets/english/UD_English-EWT...
+{'name': 'UD_English-EWT', 'train_sentences': 12544, 'dev_sentences': 2001, 'test_sentences': 2077, 'train_tokens': 204577, 'dev_tokens': 25147, 'test_tokens': 25094}
+
+Loading UD English GUM from services/datasets/english/UD_English-GUM...
+{'name': 'UD_English-EWT', 'train_sentences': 10224, 'dev_sentences': 1575, 'test_sentences': 1464, 'train_tokens': 177410, 'dev_tokens': 28119, 'test_tokens': 28397}
+
+Combining datasets...
+
+Building label vocabulary...
+  Total unique labels: 406
+
+============================================================
+Training Configuration
+============================================================
+  model_name: bert-base-uncased
+  output_dir: services/models/en/bert-base
+  learning_rate: 2e-05
+  batch_size: 32
+  epochs: 5
+  max_length: 128
+  warmup_ratio: 0.1
+  weight_decay: 0.01
+  gradient_accumulation_steps: 2
+  max_grad_norm: 1.0
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_epsilon: 1e-08
+  dropout: 0.1
+  seed: 42
+  fp16: False
+  logging_steps: 100
+  save_strategy: epoch
+  evaluation_strategy: epoch
+  early_stopping_patience: 3
+  early_stopping_threshold: 0.001
+  device: cuda
+
+Loading tokenizer: bert-base-uncased...
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+config.json: 100% 570/570 [00:00<00:00, 2.39MB/s]
+tokenizer_config.json: 100% 48.0/48.0 [00:00<00:00, 277kB/s]
+vocab.txt: 100% 232k/232k [00:00<00:00, 1.17MB/s]
+tokenizer.json: 100% 466k/466k [00:00<00:00, 1.76MB/s]
+
+Creating datasets...
+  Train batches: 712
+  Val batches: 112
+  Test batches: 111
+
+Creating model...
+model.safetensors: 100% 440M/440M [00:05<00:00, 78.9MB/s]
+Loading weights: 100% 199/199 [00:00<00:00, 1193.04it/s, Materializing param=pooler.dense.weight]
+BertModel LOAD REPORT from: bert-base-uncased
+Key                                        | Status     |  | 
+-------------------------------------------+------------+--+-
+cls.predictions.transform.LayerNorm.weight | UNEXPECTED |  | 
+cls.predictions.transform.dense.weight     | UNEXPECTED |  | 
+cls.predictions.transform.dense.bias       | UNEXPECTED |  | 
+cls.predictions.bias                       | UNEXPECTED |  | 
+cls.seq_relationship.weight                | UNEXPECTED |  | 
+cls.predictions.transform.LayerNorm.bias   | UNEXPECTED |  | 
+cls.seq_relationship.bias                  | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+✓ Model created: bert-base-uncased
+  Trainable parameters: 109,794,454
+  Number of labels: 406
+  Device: cuda
+Trainer initialized:
+  Device: cuda
+  Total steps: 1780
+  Warmup steps: 178
+  Output dir: services/models/en/bert-base
+
+============================================================
+Starting Training
+============================================================
+Epoch 1/5: 100% 712/712 [06:49<00:00,  1.74it/s, loss=1.9678, lr=1.78e-05]
+
+Epoch 1/5 completed in 438.2s
+  Train Loss: 1.9678
+  Val Loss:   0.3013
+  Accuracy:   0.9250
+  Precision:  0.3897
+  Recall:     0.3658
+  F1:         0.3658
+Writing model shards: 100% 1/1 [00:06<00:00,  6.52s/it]
+✓ Model saved to services/models/en/bert-base/best_model
+  ✓ New best model saved! F1: 0.3658
+Writing model shards: 100% 1/1 [00:02<00:00,  2.33s/it]
+✓ Model saved to services/models/en/bert-base/last_checkpoint
+Epoch 2/5: 100% 712/712 [06:53<00:00,  1.72it/s, loss=0.2353, lr=1.33e-05]
+                                                 
+Epoch 2/5 completed in 442.4s
+  Train Loss: 0.2353
+  Val Loss:   0.2213
+  Accuracy:   0.9424
+  Precision:  0.5041
+  Recall:     0.4930
+  F1:         0.4858
+Writing model shards: 100% 1/1 [00:02<00:00,  2.89s/it]
+✓ Model saved to services/models/en/bert-base/best_model
+  ✓ New best model saved! F1: 0.4858
+Writing model shards: 100% 1/1 [00:11<00:00, 11.18s/it]
+✓ Model saved to services/models/en/bert-base/last_checkpoint
+Epoch 3/5: 100% 712/712 [06:53<00:00,  1.72it/s, loss=0.1706, lr=8.89e-06]
+
+Epoch 3/5 completed in 442.1s
+  Train Loss: 0.1706
+  Val Loss:   0.2049
+  Accuracy:   0.9460
+  Precision:  0.5262
+  Recall:     0.5160
+  F1:         0.5085
+Writing model shards: 100% 1/1 [00:06<00:00,  6.12s/it]
+✓ Model saved to services/models/en/bert-base/best_model
+  ✓ New best model saved! F1: 0.5085
+Writing model shards: 100% 1/1 [00:01<00:00,  1.85s/it]
+✓ Model saved to services/models/en/bert-base/last_checkpoint
+Epoch 4/5: 100% 712/712 [06:53<00:00,  1.72it/s, loss=0.1426, lr=4.44e-06]
+
+Epoch 4/5 completed in 442.4s
+  Train Loss: 0.1426
+  Val Loss:   0.1968
+  Accuracy:   0.9488
+  Precision:  0.5496
+  Recall:     0.5466
+  F1:         0.5371
+Writing model shards: 100% 1/1 [00:05<00:00,  5.89s/it]
+✓ Model saved to services/models/en/bert-base/best_model
+  ✓ New best model saved! F1: 0.5371
+Writing model shards: 100% 1/1 [00:10<00:00, 10.78s/it]
+✓ Model saved to services/models/en/bert-base/last_checkpoint
+Epoch 5/5: 100% 712/712 [06:53<00:00,  1.72it/s, loss=0.1282, lr=0.00e+00]
+                                                 
+Epoch 5/5 completed in 442.4s
+  Train Loss: 0.1282
+  Val Loss:   0.1965
+  Accuracy:   0.9500
+  Precision:  0.5561
+  Recall:     0.5549
+  F1:         0.5468
+Writing model shards: 100% 1/1 [00:11<00:00, 11.16s/it]
+✓ Model saved to services/models/en/bert-base/best_model
+  ✓ New best model saved! F1: 0.5468
+Writing model shards: 100% 1/1 [00:01<00:00,  1.75s/it]
+✓ Model saved to services/models/en/bert-base/last_checkpoint
+Training history saved to services/models/en/bert-base/training_history.json
+
+============================================================
+Training Completed!
+============================================================
+Total time: 38.6 minutes
+Best F1: 0.5468 (Epoch 5)
+Model saved to: services/models/en/bert-base
+
+Evaluating on test set...
+
+Evaluating on test set...
+Testing: 100% 111/111 [00:27<00:00,  3.99it/s]
+
+Test Results:
+  Accuracy:  0.9483
+  Precision: 0.5783
+  Recall:    0.5731
+  F1:        0.5679
+
+✓ bert-base training complete!
+  Best F1: 0.5468
+  Model saved to: services/models/en/bert-base

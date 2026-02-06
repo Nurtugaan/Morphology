@@ -169,8 +169,8 @@ def train_flair_model(
     print(f"  Dev:   {len(corpus.dev)} sentences")
     print(f"  Test:  {len(corpus.test)} sentences")
     
-    # Create tag dictionary
-    tag_dictionary = corpus.make_label_dictionary(label_type='pos')
+    # Create tag dictionary with add_unk=True to handle unseen labels in dev/test
+    tag_dictionary = corpus.make_label_dictionary(label_type='pos', add_unk=True)
     print(f"  Tags:  {len(tag_dictionary)} unique labels")
     
     # Create embeddings based on type
@@ -225,7 +225,7 @@ def train_flair_model(
         learning_rate=learning_rate,
         mini_batch_size=mini_batch_size,
         max_epochs=epochs,
-        checkpoint=True
+        save_final_model=True
     )
     
     return {

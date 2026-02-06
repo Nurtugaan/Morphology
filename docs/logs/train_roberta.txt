@@ -1,0 +1,189 @@
+/content/morphology
+/content/morphology/services/training/models/train_roberta.py:8: SyntaxWarning: invalid escape sequence '\D'
+  cd c:\Diploma\morphology
+
+============================================================
+  Training: roberta-base
+  Output:   services/models/en/roberta-base
+============================================================
+Random seed set to 42
+Using device: cuda
+
+============================================================
+Loading Data
+============================================================
+
+Loading UD English EWT from services/datasets/english/UD_English-EWT...
+{'name': 'UD_English-EWT', 'train_sentences': 12544, 'dev_sentences': 2001, 'test_sentences': 2077, 'train_tokens': 204577, 'dev_tokens': 25147, 'test_tokens': 25094}
+
+Loading UD English GUM from services/datasets/english/UD_English-GUM...
+{'name': 'UD_English-EWT', 'train_sentences': 10224, 'dev_sentences': 1575, 'test_sentences': 1464, 'train_tokens': 177410, 'dev_tokens': 28119, 'test_tokens': 28397}
+
+Combining datasets...
+
+Building label vocabulary...
+  Total unique labels: 406
+
+============================================================
+Training Configuration
+============================================================
+  model_name: roberta-base
+  output_dir: services/models/en/roberta-base
+  learning_rate: 2e-05
+  batch_size: 32
+  epochs: 5
+  max_length: 128
+  warmup_ratio: 0.1
+  weight_decay: 0.01
+  gradient_accumulation_steps: 2
+  max_grad_norm: 1.0
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_epsilon: 1e-08
+  dropout: 0.1
+  seed: 42
+  fp16: False
+  logging_steps: 100
+  save_strategy: epoch
+  evaluation_strategy: epoch
+  early_stopping_patience: 3
+  early_stopping_threshold: 0.001
+  device: cuda
+
+Loading tokenizer: roberta-base...
+config.json: 100% 481/481 [00:00<00:00, 2.11MB/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+tokenizer_config.json: 100% 25.0/25.0 [00:00<00:00, 160kB/s]
+vocab.json: 100% 899k/899k [00:00<00:00, 1.11MB/s]
+merges.txt: 100% 456k/456k [00:00<00:00, 998kB/s]
+tokenizer.json: 100% 1.36M/1.36M [00:00<00:00, 2.01MB/s]
+
+Creating datasets...
+  Train batches: 712
+  Val batches: 112
+  Test batches: 111
+
+Creating model...
+model.safetensors: 100% 499M/499M [00:03<00:00, 158MB/s]
+Loading weights: 100% 197/197 [00:00<00:00, 1273.82it/s, Materializing param=encoder.layer.11.output.dense.weight]
+RobertaModel LOAD REPORT from: roberta-base
+Key                             | Status     | 
+--------------------------------+------------+-
+lm_head.dense.bias              | UNEXPECTED | 
+lm_head.layer_norm.weight       | UNEXPECTED | 
+roberta.embeddings.position_ids | UNEXPECTED | 
+lm_head.bias                    | UNEXPECTED | 
+lm_head.layer_norm.bias         | UNEXPECTED | 
+lm_head.dense.weight            | UNEXPECTED | 
+pooler.dense.bias               | MISSING    | 
+pooler.dense.weight             | MISSING    | 
+
+Notes:
+- UNEXPECTED	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING	:those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+✓ Model created: roberta-base
+  Trainable parameters: 124,957,846
+  Number of labels: 406
+  Device: cuda
+Trainer initialized:
+  Device: cuda
+  Total steps: 1780
+  Warmup steps: 178
+  Output dir: services/models/en/roberta-base
+
+============================================================
+Starting Training
+============================================================
+Epoch 1/5: 100% 712/712 [06:54<00:00,  1.72it/s, loss=1.7664, lr=1.78e-05]
+                                                 
+Epoch 1/5 completed in 441.4s
+  Train Loss: 1.7664
+  Val Loss:   0.3246
+  Accuracy:   0.9216
+  Precision:  0.3613
+  Recall:     0.3464
+  F1:         0.3448
+Writing model shards: 100% 1/1 [00:06<00:00,  6.36s/it]
+✓ Model saved to services/models/en/roberta-base/best_model
+  ✓ New best model saved! F1: 0.3448
+Writing model shards: 100% 1/1 [00:02<00:00,  2.24s/it]
+✓ Model saved to services/models/en/roberta-base/last_checkpoint
+Epoch 2/5: 100% 712/712 [06:57<00:00,  1.71it/s, loss=0.2637, lr=1.33e-05]
+
+Epoch 2/5 completed in 444.6s
+  Train Loss: 0.2637
+  Val Loss:   0.2366
+  Accuracy:   0.9391
+  Precision:  0.4873
+  Recall:     0.4774
+  F1:         0.4755
+Writing model shards: 100% 1/1 [00:10<00:00, 10.62s/it]
+✓ Model saved to services/models/en/roberta-base/best_model
+  ✓ New best model saved! F1: 0.4755
+Writing model shards: 100% 1/1 [00:08<00:00,  8.40s/it]
+✓ Model saved to services/models/en/roberta-base/last_checkpoint
+Epoch 3/5: 100% 712/712 [06:57<00:00,  1.71it/s, loss=0.1957, lr=8.89e-06]
+                                                 
+Epoch 3/5 completed in 444.5s
+  Train Loss: 0.1957
+  Val Loss:   0.2113
+  Accuracy:   0.9444
+  Precision:  0.5341
+  Recall:     0.5228
+  F1:         0.5169
+Writing model shards: 100% 1/1 [00:01<00:00,  1.93s/it]
+✓ Model saved to services/models/en/roberta-base/best_model
+  ✓ New best model saved! F1: 0.5169
+Writing model shards: 100% 1/1 [00:04<00:00,  4.98s/it]
+✓ Model saved to services/models/en/roberta-base/last_checkpoint
+Epoch 4/5: 100% 712/712 [06:57<00:00,  1.71it/s, loss=0.1656, lr=4.44e-06]
+
+Epoch 4/5 completed in 444.5s
+  Train Loss: 0.1656
+  Val Loss:   0.2008
+  Accuracy:   0.9475
+  Precision:  0.5438
+  Recall:     0.5325
+  F1:         0.5291
+Writing model shards: 100% 1/1 [00:10<00:00, 10.83s/it]
+✓ Model saved to services/models/en/roberta-base/best_model
+  ✓ New best model saved! F1: 0.5291
+Writing model shards: 100% 1/1 [00:02<00:00,  2.41s/it]
+✓ Model saved to services/models/en/roberta-base/last_checkpoint
+Epoch 5/5: 100% 712/712 [06:57<00:00,  1.71it/s, loss=0.1501, lr=0.00e+00]
+
+Epoch 5/5 completed in 444.6s
+  Train Loss: 0.1501
+  Val Loss:   0.1990
+  Accuracy:   0.9480
+  Precision:  0.5442
+  Recall:     0.5361
+  F1:         0.5306
+Writing model shards: 100% 1/1 [00:11<00:00, 11.39s/it]
+✓ Model saved to services/models/en/roberta-base/best_model
+  ✓ New best model saved! F1: 0.5306
+Writing model shards: 100% 1/1 [00:01<00:00,  1.97s/it]
+✓ Model saved to services/models/en/roberta-base/last_checkpoint
+Training history saved to services/models/en/roberta-base/training_history.json
+
+============================================================
+Training Completed!
+============================================================
+Total time: 38.8 minutes
+Best F1: 0.5306 (Epoch 5)
+Model saved to: services/models/en/roberta-base
+
+Evaluating on test set...
+
+Evaluating on test set...
+Testing: 100% 111/111 [00:26<00:00,  4.13it/s]
+
+Test Results:
+  Accuracy:  0.9489
+  Precision: 0.5645
+  Recall:    0.5692
+  F1:        0.5590
+
+✓ roberta-base training complete!
+  Best F1: 0.5306
+  Model saved to: services/models/en/roberta-base

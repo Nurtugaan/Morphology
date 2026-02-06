@@ -120,8 +120,8 @@ def train_model(
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(f"Using device: {device}")
     
-    # Load data
-    dataset, label2id, id2label = load_data(ewt_dir, gum_dir)
+    # Load data (combine EWT + GUM if both exist)
+    dataset, label2id, id2label = load_data(ewt_dir, gum_dir, combine=True)
     
     # Create config
     config = get_config(model_name)

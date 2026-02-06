@@ -1,0 +1,199 @@
+/content/morphology
+/content/morphology/services/training/models/train_albert.py:11: SyntaxWarning: invalid escape sequence '\D'
+  cd c:\Diploma\morphology
+
+============================================================
+  Training: albert-base-v2
+  Output:   services/models/en/albert-base
+============================================================
+Random seed set to 42
+Using device: cuda
+
+============================================================
+Loading Data
+============================================================
+
+Loading UD English EWT from services/datasets/english/UD_English-EWT...
+{'name': 'UD_English-EWT', 'train_sentences': 12544, 'dev_sentences': 2001, 'test_sentences': 2077, 'train_tokens': 204577, 'dev_tokens': 25147, 'test_tokens': 25094}
+
+Loading UD English GUM from services/datasets/english/UD_English-GUM...
+{'name': 'UD_English-EWT', 'train_sentences': 10224, 'dev_sentences': 1575, 'test_sentences': 1464, 'train_tokens': 177410, 'dev_tokens': 28119, 'test_tokens': 28397}
+
+Combining datasets...
+
+Building label vocabulary...
+  Total unique labels: 406
+
+============================================================
+Training Configuration
+============================================================
+  model_name: albert-base-v2
+  output_dir: services/models/en/albert-base
+  learning_rate: 2e-05
+  batch_size: 64
+  epochs: 6
+  max_length: 128
+  warmup_ratio: 0.1
+  weight_decay: 0.01
+  gradient_accumulation_steps: 2
+  max_grad_norm: 1.0
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_epsilon: 1e-08
+  dropout: 0.1
+  seed: 42
+  fp16: False
+  logging_steps: 100
+  save_strategy: epoch
+  evaluation_strategy: epoch
+  early_stopping_patience: 3
+  early_stopping_threshold: 0.001
+  device: cuda
+
+Loading tokenizer: albert-base-v2...
+config.json: 100% 684/684 [00:00<00:00, 2.81MB/s]
+tokenizer_config.json: 100% 25.0/25.0 [00:00<00:00, 149kB/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+spiece.model: 100% 760k/760k [00:00<00:00, 1.49MB/s]
+tokenizer.json: 100% 1.31M/1.31M [00:00<00:00, 1.87MB/s]
+
+Creating datasets...
+  Train batches: 356
+  Val batches: 56
+  Test batches: 56
+
+Creating model...
+model.safetensors: 100% 47.4M/47.4M [00:01<00:00, 27.8MB/s]
+Loading weights: 100% 25/25 [00:00<00:00, 3080.15it/s, Materializing param=pooler.weight]
+AlbertModel LOAD REPORT from: albert-base-v2
+Key                          | Status     |  | 
+-----------------------------+------------+--+-
+predictions.dense.bias       | UNEXPECTED |  | 
+predictions.decoder.bias     | UNEXPECTED |  | 
+predictions.LayerNorm.weight | UNEXPECTED |  | 
+predictions.bias             | UNEXPECTED |  | 
+predictions.dense.weight     | UNEXPECTED |  | 
+predictions.LayerNorm.bias   | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+✓ Model created: albert-base-v2
+  Trainable parameters: 11,995,798
+  Number of labels: 406
+  Device: cuda
+Trainer initialized:
+  Device: cuda
+  Total steps: 1068
+  Warmup steps: 106
+  Output dir: services/models/en/albert-base
+
+============================================================
+Starting Training
+============================================================
+Epoch 1/6: 100% 356/356 [07:31<00:00,  1.27s/it, loss=2.1613, lr=1.85e-05]
+                                               
+Epoch 1/6 completed in 484.4s
+  Train Loss: 2.1613
+  Val Loss:   0.4884
+  Accuracy:   0.8982
+  Precision:  0.3580
+  Recall:     0.3406
+  F1:         0.3413
+Writing model shards: 100% 1/1 [00:00<00:00, 12.53it/s]
+✓ Model saved to services/models/en/albert-base/best_model
+  ✓ New best model saved! F1: 0.3413
+Writing model shards: 100% 1/1 [00:00<00:00,  9.31it/s]
+✓ Model saved to services/models/en/albert-base/last_checkpoint
+Epoch 2/6: 100% 356/356 [07:33<00:00,  1.27s/it, loss=0.2751, lr=1.48e-05]
+                                               
+Epoch 2/6 completed in 486.8s
+  Train Loss: 0.2751
+  Val Loss:   0.2480
+  Accuracy:   0.9371
+  Precision:  0.4946
+  Recall:     0.4730
+  F1:         0.4729
+Writing model shards: 100% 1/1 [00:00<00:00,  9.14it/s]
+✓ Model saved to services/models/en/albert-base/best_model
+  ✓ New best model saved! F1: 0.4729
+Writing model shards: 100% 1/1 [00:05<00:00,  5.12s/it]
+✓ Model saved to services/models/en/albert-base/last_checkpoint
+Epoch 3/6: 100% 356/356 [07:33<00:00,  1.27s/it, loss=0.1876, lr=1.11e-05]
+                                               
+Epoch 3/6 completed in 486.8s
+  Train Loss: 0.1876
+  Val Loss:   0.2185
+  Accuracy:   0.9416
+  Precision:  0.5339
+  Recall:     0.5112
+  F1:         0.5097
+Writing model shards: 100% 1/1 [00:00<00:00,  7.61it/s]
+✓ Model saved to services/models/en/albert-base/best_model
+  ✓ New best model saved! F1: 0.5097
+Writing model shards: 100% 1/1 [00:05<00:00,  5.04s/it]
+✓ Model saved to services/models/en/albert-base/last_checkpoint
+Epoch 4/6: 100% 356/356 [07:34<00:00,  1.28s/it, loss=0.1540, lr=7.40e-06]
+                                               
+Epoch 4/6 completed in 487.2s
+  Train Loss: 0.1540
+  Val Loss:   0.2106
+  Accuracy:   0.9445
+  Precision:  0.5372
+  Recall:     0.5202
+  F1:         0.5195
+Writing model shards: 100% 1/1 [00:00<00:00,  8.36it/s]
+✓ Model saved to services/models/en/albert-base/best_model
+  ✓ New best model saved! F1: 0.5195
+Writing model shards: 100% 1/1 [00:05<00:00,  5.18s/it]
+✓ Model saved to services/models/en/albert-base/last_checkpoint
+Epoch 5/6: 100% 356/356 [07:34<00:00,  1.28s/it, loss=0.1335, lr=3.70e-06]
+                                               
+Epoch 5/6 completed in 487.3s
+  Train Loss: 0.1335
+  Val Loss:   0.2054
+  Accuracy:   0.9451
+  Precision:  0.5511
+  Recall:     0.5369
+  F1:         0.5357
+Writing model shards: 100% 1/1 [00:00<00:00,  8.84it/s]
+✓ Model saved to services/models/en/albert-base/best_model
+  ✓ New best model saved! F1: 0.5357
+Writing model shards: 100% 1/1 [00:00<00:00,  9.62it/s]
+✓ Model saved to services/models/en/albert-base/last_checkpoint
+Epoch 6/6: 100% 356/356 [07:33<00:00,  1.27s/it, loss=0.1185, lr=0.00e+00]
+
+Epoch 6/6 completed in 486.9s
+  Train Loss: 0.1185
+  Val Loss:   0.2061
+  Accuracy:   0.9464
+  Precision:  0.5636
+  Recall:     0.5479
+  F1:         0.5463
+Writing model shards: 100% 1/1 [00:00<00:00,  9.39it/s]
+✓ Model saved to services/models/en/albert-base/best_model
+  ✓ New best model saved! F1: 0.5463
+Writing model shards: 100% 1/1 [00:00<00:00,  7.49it/s]
+✓ Model saved to services/models/en/albert-base/last_checkpoint
+Training history saved to services/models/en/albert-base/training_history.json
+
+============================================================
+Training Completed!
+============================================================
+Total time: 49.0 minutes
+Best F1: 0.5463 (Epoch 6)
+Model saved to: services/models/en/albert-base
+
+Evaluating on test set...
+
+Evaluating on test set...
+Testing: 100% 56/56 [00:32<00:00,  1.71it/s]
+
+Test Results:
+  Accuracy:  0.9464
+  Precision: 0.5771
+  Recall:    0.5611
+  F1:        0.5609
+
+✓ albert-base training complete!
+  Best F1: 0.5463
+  Model saved to: services/models/en/albert-base
