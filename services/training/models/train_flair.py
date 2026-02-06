@@ -42,9 +42,9 @@ OUTPUT_DIR = "services/models/en/flair"
 # Flair uses different hyperparameters than Transformers
 DEFAULT_CONFIG = {
     'output_dir': OUTPUT_DIR,
-    'epochs': 15,              # Flair usually needs more epochs
+    'epochs': 10,              # Flair usually needs more epochs
     'learning_rate': 0.1,      # Flair uses SGD with higher LR
-    'mini_batch_size': 32,
+    'mini_batch_size': 8,      # Reduced from 32 to avoid CUDA OOM with multiple datasets
     'hidden_size': 256,
     'rnn_layers': 2,
     'use_crf': True,           # CRF layer for sequence labeling
@@ -70,7 +70,7 @@ def check_flair_installed():
 
 
 def prepare_flair_data(
-    ewt_dir: str,
+    dataset_dirs: List[str],
     output_dir: str
 ) -> str:
     """
@@ -83,7 +83,7 @@ def prepare_flair_data(
     (пустая строка между предложениями)
     
     Args:
-        ewt_dir: Путь к UD English EWT
+        dataset_dirs: Список путей к UD датасетам (EWT, GUM и т.д.)
         output_dir: Директория для сохранения
         
     Returns:
@@ -93,7 +93,22 @@ def prepare_flair_data(
     
     print("Preparing data for Flair format...")
     
-    dataset = load_ud_dataset(ewt_dir)
+    # Объединяем данные из всех датасетов
+    all_train = []
+    all_dev = []
+    all_test = []
+    
+    for dataset_dir in dataset_dirs:
+        dataset_name = Path(dataset_dir).name
+        print(f"  Loading {dataset_name}...")
+        dataset = load_ud_dataset(dataset_dir, dataset_name)
+        all_train.extend(dataset.train)
+        all_dev.extend(dataset.dev)
+        all_test.extend(dataset.test)
+        print(f"    Train: {len(dataset.train)}, Dev: {len(dataset.dev)}, Test: {len(dataset.test)}")
+    
+    print(f"  Combined: Train={len(all_train)}, Dev={len(all_dev)}, Test={len(all_test)}")
+    
     output_path = Path(output_dir) / "flair_data"
     output_path.mkdir(parents=True, exist_ok=True)
     
@@ -104,9 +119,9 @@ def prepare_flair_data(
                     f.write(f"{token.form} {token.label}\n")
                 f.write("\n")  # Empty line between sentences
     
-    write_flair_file(dataset.train, output_path / "train.txt")
-    write_flair_file(dataset.dev, output_path / "dev.txt")
-    write_flair_file(dataset.test, output_path / "test.txt")
+    write_flair_file(all_train, output_path / "train.txt")
+    write_flair_file(all_dev, output_path / "dev.txt")
+    write_flair_file(all_test, output_path / "test.txt")
     
     print(f"  Data saved to {output_path}")
     return str(output_path)
@@ -169,8 +184,13 @@ def train_flair_model(
     print(f"  Dev:   {len(corpus.dev)} sentences")
     print(f"  Test:  {len(corpus.test)} sentences")
     
-    # Create tag dictionary with add_unk=True to handle unseen labels in dev/test
-    tag_dictionary = corpus.make_label_dictionary(label_type='pos', add_unk=True)
+    # Create tag dictionary (compatible with different Flair versions)
+    try:
+        # Flair 0.15+
+        tag_dictionary = corpus.make_label_dictionary(label_type='pos', add_unk=True)
+    except TypeError:
+        # Flair 0.11 and earlier
+        tag_dictionary = corpus.make_label_dictionary(label_type='pos')
     print(f"  Tags:  {len(tag_dictionary)} unique labels")
     
     # Create embeddings based on type
@@ -252,8 +272,13 @@ def main():
                         choices=['flair', 'glove', 'char', 'stacked'])
     parser.add_argument('--output-dir', '-o', type=str, default=DEFAULT_CONFIG['output_dir'])
     
-    # Data arguments
-    parser.add_argument('--ewt-dir', type=str, default='services/datasets/english/UD_English-EWT')
+    # Data arguments - теперь поддерживается несколько датасетов
+    parser.add_argument('--dataset-dirs', type=str, nargs='+',
+                        default=[
+                            'services/datasets/english/UD_English-EWT',
+                            'services/datasets/english/UD_English-GUM'
+                        ],
+                        help='Paths to UD dataset directories')
     
     args = parser.parse_args()
     
@@ -261,14 +286,15 @@ def main():
     print("\n" + "=" * 60)
     print("  Training: Flair (BiLSTM + CRF)")
     print(f"  Output:   {args.output_dir}")
+    print(f"  Datasets: {len(args.dataset_dirs)} корпусов")
     print("=" * 60)
     
     # Check flair installation
     if not check_flair_installed():
         sys.exit(1)
     
-    # Prepare data
-    data_dir = prepare_flair_data(args.ewt_dir, args.output_dir)
+    # Prepare data (объединение всех датасетов)
+    data_dir = prepare_flair_data(args.dataset_dirs, args.output_dir)
     
     # Train model
     results = train_flair_model(

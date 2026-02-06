@@ -1,7 +1,3 @@
-/content/morphology
-/content/morphology/services/training/models/train_distilbert.py:11: SyntaxWarning: invalid escape sequence '\D'
-  cd c:\Diploma\morphology
-
 ============================================================
   Training: distilbert-base-uncased
   Output:   services/models/en/distilbert

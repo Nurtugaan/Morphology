@@ -1,7 +1,3 @@
-/content/morphology
-/content/morphology/services/training/models/train_bert.py:8: SyntaxWarning: invalid escape sequence '\D'
-  cd c:\Diploma\morphology
-
 ============================================================
   Training: bert-base-uncased
   Output:   services/models/en/bert-base

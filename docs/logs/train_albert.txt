@@ -1,7 +1,3 @@
-/content/morphology
-/content/morphology/services/training/models/train_albert.py:11: SyntaxWarning: invalid escape sequence '\D'
-  cd c:\Diploma\morphology
-
 ============================================================
   Training: albert-base-v2
   Output:   services/models/en/albert-base

@@ -1,0 +1,400 @@
+============================================================
+  Training: Flair (BiLSTM + CRF)
+  Output:   services/models/en/flair
+  Datasets: 1 корпусов
+============================================================
+2026-02-06 20:59:28.248720: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:467] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1770411568.280436    5462 cuda_dnn.cc:8579] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1770411568.290165    5462 cuda_blas.cc:1407] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+W0000 00:00:1770411568.313718    5462 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1770411568.313752    5462 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1770411568.313766    5462 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1770411568.313773    5462 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+2026-02-06 20:59:28.320502: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Flair version: 0.15.1
+Preparing data for Flair format...
+  Loading UD_English-EWT...
+    Train: 12544, Dev: 2001, Test: 2077
+  Combined: Train=12544, Dev=2001, Test=2077
+  Data saved to services/models/en/flair/flair_data
+
+Loading corpus from services/models/en/flair/flair_data...
+2026-02-06 20:59:35,729 Reading data from services/models/en/flair/flair_data
+2026-02-06 20:59:35,729 Train: services/models/en/flair/flair_data/train.txt
+2026-02-06 20:59:35,729 Dev: services/models/en/flair/flair_data/dev.txt
+2026-02-06 20:59:35,729 Test: services/models/en/flair/flair_data/test.txt
+  Train: 12544 sentences
+  Dev:   2001 sentences
+  Test:  2077 sentences
+2026-02-06 20:59:39,245 Computing label dictionary. Progress:
+0it [00:00, ?it/s]
+12544it [00:00, 36620.89it/s]
+2026-02-06 20:59:39,590 Dictionary created for label 'pos' with 324 values: NOUN|Number=Sing (seen 26043 times), PUNCT|_ (seen 23594 times), ADP|_ (seen 17502 times), ADJ|Degree=Pos (seen 11805 times), PROPN|Number=Sing (seen 11627 times), DET|Definite=Def|PronType=Art (seen 9064 times), NOUN|Number=Plur (seen 8192 times), VERB|VerbForm=Inf (seen 6919 times), ADV|_ (seen 6893 times), CCONJ|_ (seen 6657 times), DET|Definite=Ind|PronType=Art (seen 4236 times), PART|_ (seen 3875 times), SCONJ|_ (seen 3754 times), PRON|Case=Nom|Number=Sing|Person=1|PronType=Prs (seen 3377 times), AUX|VerbForm=Fin (seen 3275 times), NUM|NumForm=Digit|NumType=Card (seen 3057 times), AUX|Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin (seen 2945 times), VERB|Tense=Past|VerbForm=Part|Voice=Pass (seen 2649 times), VERB|Tense=Pres|VerbForm=Part (seen 2113 times), PART|Polarity=Neg (seen 1698 times)
+  Tags:  324 unique labels
+
+Creating embeddings (flair)...
+
+Creating SequenceTagger model...
+2026-02-06 20:59:40,260 SequenceTagger predicts: Dictionary with 324 tags: <unk>, NOUN|Number=Sing, PUNCT|_, ADP|_, ADJ|Degree=Pos, PROPN|Number=Sing, DET|Definite=Def|PronType=Art, NOUN|Number=Plur, VERB|VerbForm=Inf, ADV|_, CCONJ|_, DET|Definite=Ind|PronType=Art, PART|_, SCONJ|_, PRON|Case=Nom|Number=Sing|Person=1|PronType=Prs, AUX|VerbForm=Fin, NUM|NumForm=Digit|NumType=Card, AUX|Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin, VERB|Tense=Past|VerbForm=Part|Voice=Pass, VERB|Tense=Pres|VerbForm=Part, PART|Polarity=Neg, PRON|Case=Nom|Person=2|PronType=Prs, VERB|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin, VERB|Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin, PRON|PronType=Rel, AUX|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin, PRON|Case=Nom|Gender=Neut|Number=Sing|Person=3|PronType=Prs, AUX|VerbForm=Inf, VERB|Mood=Imp|VerbForm=Fin, AUX|Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin, PRON|Case=Nom|Number=Plur|Person=3|PronType=Prs, VERB|VerbForm=Ger, VERB|Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin, VERB|Tense=Past|VerbForm=Part, PRON|Case=Nom|Number=Plur|Person=1|PronType=Prs, VERB|Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin, PRON|Case=Gen|Number=Sing|Person=1|Poss=Yes|PronType=Prs, DET|Number=Sing|PronType=Dem, VERB|Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin, AUX|Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin, DET|PronType=Ind, ADV|PronType=Dem, PRON|Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs, NUM|NumForm=Word|NumType=Card, ADV|PronType=Int, PRON|Number=Sing|PronType=Dem, PRON|Case=Gen|Person=2|Poss=Yes|PronType=Prs, DET|PronType=Tot, PRON|Case=Acc|Gender=Neut|Number=Sing|Person=3|PronType=Prs, PRON|Case=Acc|Number=Sing|Person=1|PronType=Prs
+  Model parameters: 62,834,378
+
+Starting training for 5 epochs...
+/usr/local/lib/python3.12/dist-packages/flair/trainers/trainer.py:545: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=use_amp and flair.device.type != "cpu")
+2026-02-06 20:59:40,467 ----------------------------------------------------------------------------------------------------
+2026-02-06 20:59:40,467 Model: "SequenceTagger(
+  (embeddings): StackedEmbeddings(
+    (list_embedding_0): FlairEmbeddings(
+      (lm): LanguageModel(
+        (drop): Dropout(p=0.05, inplace=False)
+        (encoder): Embedding(300, 100)
+        (rnn): LSTM(100, 2048)
+      )
+    )
+    (list_embedding_1): FlairEmbeddings(
+      (lm): LanguageModel(
+        (drop): Dropout(p=0.05, inplace=False)
+        (encoder): Embedding(300, 100)
+        (rnn): LSTM(100, 2048)
+      )
+    )
+  )
+  (word_dropout): WordDropout(p=0.05)
+  (locked_dropout): LockedDropout(p=0.5)
+  (embedding2nn): Linear(in_features=4096, out_features=4096, bias=True)
+  (rnn): LSTM(4096, 256, num_layers=2, batch_first=True, dropout=0.5, bidirectional=True)
+  (linear): Linear(in_features=512, out_features=326, bias=True)
+  (loss_function): ViterbiLoss()
+  (crf): CRF()
+)"
+2026-02-06 20:59:40,467 ----------------------------------------------------------------------------------------------------
+2026-02-06 20:59:40,467 Corpus: 12544 train + 2001 dev + 2077 test sentences
+2026-02-06 20:59:40,467 ----------------------------------------------------------------------------------------------------
+2026-02-06 20:59:40,467 Train:  12544 sentences
+2026-02-06 20:59:40,467         (train_with_dev=False, train_with_test=False)
+2026-02-06 20:59:40,467 ----------------------------------------------------------------------------------------------------
+2026-02-06 20:59:40,467 Training Params:
+2026-02-06 20:59:40,468  - learning_rate: "0.1" 
+2026-02-06 20:59:40,468  - mini_batch_size: "16"
+2026-02-06 20:59:40,468  - max_epochs: "5"
+2026-02-06 20:59:40,468  - shuffle: "True"
+2026-02-06 20:59:40,468 ----------------------------------------------------------------------------------------------------
+2026-02-06 20:59:40,468 Plugins:
+2026-02-06 20:59:40,468  - AnnealOnPlateau | patience: '3', anneal_factor: '0.5', min_learning_rate: '0.0001'
+2026-02-06 20:59:40,468 ----------------------------------------------------------------------------------------------------
+2026-02-06 20:59:40,468 Final evaluation on model from best epoch (best-model.pt)
+2026-02-06 20:59:40,468  - metric: "('micro avg', 'f1-score')"
+2026-02-06 20:59:40,468 ----------------------------------------------------------------------------------------------------
+2026-02-06 20:59:40,468 Computation:
+2026-02-06 20:59:40,468  - compute on device: cuda:0
+2026-02-06 20:59:40,468  - embedding storage: cpu
+2026-02-06 20:59:40,468 ----------------------------------------------------------------------------------------------------
+2026-02-06 20:59:40,468 Model training base path: "services/models/en/flair"
+2026-02-06 20:59:40,468 ----------------------------------------------------------------------------------------------------
+2026-02-06 20:59:40,468 ----------------------------------------------------------------------------------------------------
+2026-02-06 21:00:28,628 epoch 1 - iter 78/784 - loss 4.28560512 - time (sec): 48.16 - samples/sec: 429.14 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:01:14,494 epoch 1 - iter 156/784 - loss 3.73991366 - time (sec): 94.03 - samples/sec: 436.57 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:01:59,997 epoch 1 - iter 234/784 - loss 3.28815183 - time (sec): 139.53 - samples/sec: 439.37 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:02:50,974 epoch 1 - iter 312/784 - loss 2.93801558 - time (sec): 190.51 - samples/sec: 429.85 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:03:33,316 epoch 1 - iter 390/784 - loss 2.67562369 - time (sec): 232.85 - samples/sec: 437.80 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:04:22,039 epoch 1 - iter 468/784 - loss 2.44562119 - time (sec): 281.57 - samples/sec: 435.07 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:05:13,886 epoch 1 - iter 546/784 - loss 2.27306868 - time (sec): 333.42 - samples/sec: 428.83 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:05:56,429 epoch 1 - iter 624/784 - loss 2.12848713 - time (sec): 375.96 - samples/sec: 432.26 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:06:44,743 epoch 1 - iter 702/784 - loss 1.99883807 - time (sec): 424.27 - samples/sec: 431.39 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:07:31,984 epoch 1 - iter 780/784 - loss 1.88839650 - time (sec): 471.51 - samples/sec: 431.56 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:07:34,364 ----------------------------------------------------------------------------------------------------
+2026-02-06 21:07:34,364 EPOCH 1 done: loss 1.8829 - lr: 0.100000
+100% 32/32 [00:19<00:00,  1.66it/s]
+2026-02-06 21:07:53,741 DEV : loss 0.6398301720619202 - f1-score (micro avg)  0.8573
+2026-02-06 21:07:53,828  - 0 epochs without improvement
+2026-02-06 21:07:53,829 saving best model
+2026-02-06 21:07:54,401 ----------------------------------------------------------------------------------------------------
+2026-02-06 21:08:21,440 epoch 2 - iter 78/784 - loss 0.80781455 - time (sec): 27.04 - samples/sec: 759.03 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:08:50,597 epoch 2 - iter 156/784 - loss 0.77599766 - time (sec): 56.20 - samples/sec: 734.22 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:09:19,732 epoch 2 - iter 234/784 - loss 0.75918460 - time (sec): 85.33 - samples/sec: 723.46 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:09:47,486 epoch 2 - iter 312/784 - loss 0.74419024 - time (sec): 113.08 - samples/sec: 725.32 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:10:16,443 epoch 2 - iter 390/784 - loss 0.72558257 - time (sec): 142.04 - samples/sec: 717.41 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:10:49,246 epoch 2 - iter 468/784 - loss 0.71344707 - time (sec): 174.84 - samples/sec: 701.67 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:11:14,401 epoch 2 - iter 546/784 - loss 0.69976197 - time (sec): 200.00 - samples/sec: 710.30 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:11:44,088 epoch 2 - iter 624/784 - loss 0.68839120 - time (sec): 229.69 - samples/sec: 710.75 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:12:16,297 epoch 2 - iter 702/784 - loss 0.67822550 - time (sec): 261.90 - samples/sec: 700.95 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:12:45,645 epoch 2 - iter 780/784 - loss 0.66621256 - time (sec): 291.24 - samples/sec: 698.71 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:12:47,230 ----------------------------------------------------------------------------------------------------
+2026-02-06 21:12:47,230 EPOCH 2 done: loss 0.6660 - lr: 0.100000
+100% 32/32 [00:07<00:00,  4.38it/s]
+2026-02-06 21:12:54,682 DEV : loss 0.39002665877342224 - f1-score (micro avg)  0.9077
+2026-02-06 21:12:54,754  - 0 epochs without improvement
+2026-02-06 21:12:54,755 saving best model
+2026-02-06 21:12:55,361 ----------------------------------------------------------------------------------------------------
+2026-02-06 21:13:26,480 epoch 3 - iter 78/784 - loss 0.54010949 - time (sec): 31.12 - samples/sec: 653.71 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:13:55,025 epoch 3 - iter 156/784 - loss 0.53124047 - time (sec): 59.66 - samples/sec: 689.39 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:14:23,760 epoch 3 - iter 234/784 - loss 0.52280611 - time (sec): 88.40 - samples/sec: 696.14 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:14:52,524 epoch 3 - iter 312/784 - loss 0.52255455 - time (sec): 117.16 - samples/sec: 700.32 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:15:21,637 epoch 3 - iter 390/784 - loss 0.51652713 - time (sec): 146.28 - samples/sec: 696.78 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:15:51,114 epoch 3 - iter 468/784 - loss 0.51299399 - time (sec): 175.75 - samples/sec: 693.69 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:16:18,879 epoch 3 - iter 546/784 - loss 0.50637558 - time (sec): 203.52 - samples/sec: 697.72 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:16:47,866 epoch 3 - iter 624/784 - loss 0.50051776 - time (sec): 232.50 - samples/sec: 698.83 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:17:17,500 epoch 3 - iter 702/784 - loss 0.49537575 - time (sec): 262.14 - samples/sec: 697.89 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:17:48,768 epoch 3 - iter 780/784 - loss 0.49092169 - time (sec): 293.41 - samples/sec: 693.72 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:17:50,036 ----------------------------------------------------------------------------------------------------
+2026-02-06 21:17:50,036 EPOCH 3 done: loss 0.4907 - lr: 0.100000
+100% 32/32 [00:06<00:00,  4.89it/s]
+2026-02-06 21:17:56,731 DEV : loss 0.30947670340538025 - f1-score (micro avg)  0.9234
+2026-02-06 21:17:56,807  - 0 epochs without improvement
+2026-02-06 21:17:56,807 saving best model
+2026-02-06 21:17:57,474 ----------------------------------------------------------------------------------------------------
+2026-02-06 21:18:27,496 epoch 4 - iter 78/784 - loss 0.46260329 - time (sec): 30.02 - samples/sec: 682.84 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:18:58,803 epoch 4 - iter 156/784 - loss 0.44261313 - time (sec): 61.33 - samples/sec: 668.76 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:19:31,958 epoch 4 - iter 234/784 - loss 0.44089759 - time (sec): 94.48 - samples/sec: 652.98 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:19:59,903 epoch 4 - iter 312/784 - loss 0.43646401 - time (sec): 122.43 - samples/sec: 668.48 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:20:28,362 epoch 4 - iter 390/784 - loss 0.42992587 - time (sec): 150.89 - samples/sec: 673.28 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:20:58,348 epoch 4 - iter 468/784 - loss 0.42438599 - time (sec): 180.87 - samples/sec: 671.98 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:21:26,468 epoch 4 - iter 546/784 - loss 0.41892465 - time (sec): 208.99 - samples/sec: 681.48 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:21:55,050 epoch 4 - iter 624/784 - loss 0.41860184 - time (sec): 237.58 - samples/sec: 682.94 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:22:24,659 epoch 4 - iter 702/784 - loss 0.41796507 - time (sec): 267.18 - samples/sec: 685.62 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:22:51,810 epoch 4 - iter 780/784 - loss 0.41716064 - time (sec): 294.34 - samples/sec: 691.29 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:22:53,273 ----------------------------------------------------------------------------------------------------
+2026-02-06 21:22:53,273 EPOCH 4 done: loss 0.4172 - lr: 0.100000
+100% 32/32 [00:06<00:00,  5.11it/s]
+2026-02-06 21:22:59,692 DEV : loss 0.2880978584289551 - f1-score (micro avg)  0.9306
+2026-02-06 21:22:59,763  - 0 epochs without improvement
+2026-02-06 21:22:59,763 saving best model
+2026-02-06 21:23:03,256 ----------------------------------------------------------------------------------------------------
+2026-02-06 21:23:33,777 epoch 5 - iter 78/784 - loss 0.39265651 - time (sec): 30.52 - samples/sec: 655.98 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:24:02,123 epoch 5 - iter 156/784 - loss 0.38280833 - time (sec): 58.86 - samples/sec: 689.53 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:24:30,375 epoch 5 - iter 234/784 - loss 0.38343510 - time (sec): 87.12 - samples/sec: 699.99 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:25:04,366 epoch 5 - iter 312/784 - loss 0.38451316 - time (sec): 121.11 - samples/sec: 677.29 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:25:30,997 epoch 5 - iter 390/784 - loss 0.38055709 - time (sec): 147.74 - samples/sec: 689.96 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:26:03,043 epoch 5 - iter 468/784 - loss 0.37984691 - time (sec): 179.79 - samples/sec: 679.28 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:26:28,834 epoch 5 - iter 546/784 - loss 0.37747522 - time (sec): 205.58 - samples/sec: 691.42 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:26:59,628 epoch 5 - iter 624/784 - loss 0.37677642 - time (sec): 236.37 - samples/sec: 689.69 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:27:27,971 epoch 5 - iter 702/784 - loss 0.37481643 - time (sec): 264.71 - samples/sec: 693.01 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:27:56,454 epoch 5 - iter 780/784 - loss 0.37264599 - time (sec): 293.20 - samples/sec: 694.50 - lr: 0.100000 - momentum: 0.000000
+2026-02-06 21:27:57,673 ----------------------------------------------------------------------------------------------------
+2026-02-06 21:27:57,673 EPOCH 5 done: loss 0.3726 - lr: 0.100000
+100% 32/32 [00:06<00:00,  4.69it/s]
+2026-02-06 21:28:04,753 DEV : loss 0.2700411081314087 - f1-score (micro avg)  0.9366
+2026-02-06 21:28:04,874  - 0 epochs without improvement
+2026-02-06 21:28:04,875 saving best model
+2026-02-06 21:28:12,080 ----------------------------------------------------------------------------------------------------
+2026-02-06 21:28:12,080 Loading model from best epoch ...
+2026-02-06 21:28:12,879 SequenceTagger predicts: Dictionary with 326 tags: <unk>, NOUN|Number=Sing, PUNCT|_, ADP|_, ADJ|Degree=Pos, PROPN|Number=Sing, DET|Definite=Def|PronType=Art, NOUN|Number=Plur, VERB|VerbForm=Inf, ADV|_, CCONJ|_, DET|Definite=Ind|PronType=Art, PART|_, SCONJ|_, PRON|Case=Nom|Number=Sing|Person=1|PronType=Prs, AUX|VerbForm=Fin, NUM|NumForm=Digit|NumType=Card, AUX|Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin, VERB|Tense=Past|VerbForm=Part|Voice=Pass, VERB|Tense=Pres|VerbForm=Part, PART|Polarity=Neg, PRON|Case=Nom|Person=2|PronType=Prs, VERB|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin, VERB|Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin, PRON|PronType=Rel, AUX|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin, PRON|Case=Nom|Gender=Neut|Number=Sing|Person=3|PronType=Prs, AUX|VerbForm=Inf, VERB|Mood=Imp|VerbForm=Fin, AUX|Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin, PRON|Case=Nom|Number=Plur|Person=3|PronType=Prs, VERB|VerbForm=Ger, VERB|Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin, VERB|Tense=Past|VerbForm=Part, PRON|Case=Nom|Number=Plur|Person=1|PronType=Prs, VERB|Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin, PRON|Case=Gen|Number=Sing|Person=1|Poss=Yes|PronType=Prs, DET|Number=Sing|PronType=Dem, VERB|Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin, AUX|Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin, DET|PronType=Ind, ADV|PronType=Dem, PRON|Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs, NUM|NumForm=Word|NumType=Card, ADV|PronType=Int, PRON|Number=Sing|PronType=Dem, PRON|Case=Gen|Person=2|Poss=Yes|PronType=Prs, DET|PronType=Tot, PRON|Case=Acc|Gender=Neut|Number=Sing|Person=3|PronType=Prs, PRON|Case=Acc|Number=Sing|Person=1|PronType=Prs
+100% 33/33 [00:17<00:00,  1.91it/s]
+2026-02-06 21:28:30,707 
+Results:
+- F-score (micro) 0.9395
+- F-score (macro) 0.5208
+- Accuracy 0.9395
+
+By class:
+                                                                               precision    recall  f1-score   support
+
+                                                             NOUN|Number=Sing     0.9210    0.9366    0.9287      3187
+                                                                      PUNCT|_     0.9809    0.9968    0.9888      3096
+                                                                        ADP|_     0.9630    0.9770    0.9700      2000
+                                                            PROPN|Number=Sing     0.8920    0.8801    0.8860      1876
+                                                               ADJ|Degree=Pos     0.9002    0.9481    0.9235      1618
+                                                DET|Definite=Def|PronType=Art     0.9990    1.0000    0.9995       973
+                                                             NOUN|Number=Plur     0.9394    0.9577    0.9484       874
+                                                            VERB|VerbForm=Inf     0.9174    0.9708    0.9433       789
+                                                                        ADV|_     0.9267    0.9012    0.9138       800
+                                                                      CCONJ|_     0.9878    0.9986    0.9932       728
+                                                DET|Definite=Ind|PronType=Art     0.9965    0.9982    0.9973       565
+                              PRON|Case=Nom|Number=Sing|Person=1|PronType=Prs     0.9916    1.0000    0.9958       474
+                                                                       PART|_     0.9862    0.9954    0.9908       431
+                                               NUM|NumForm=Digit|NumType=Card     0.8689    1.0000    0.9298       391
+                                                             AUX|VerbForm=Fin     0.9950    0.9950    0.9950       398
+                                                                      SCONJ|_     0.9175    0.9519    0.9344       374
+                    AUX|Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin     0.9894    1.0000    0.9947       374
+                                     VERB|Tense=Past|VerbForm=Part|Voice=Pass     0.8505    0.9242    0.8858       277
+                                                VERB|Tense=Pres|VerbForm=Part     0.9127    0.8970    0.9048       233
+                                          PRON|Case=Nom|Person=2|PronType=Prs     0.9858    0.9812    0.9835       213
+                                                            PART|Polarity=Neg     0.9896    1.0000    0.9948       190
+                   VERB|Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin     0.9890    0.9626    0.9756       187
+                   VERB|Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin     0.9699    0.9253    0.9471       174
+                   VERB|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin     0.8831    0.9252    0.9037       147
+                                                             AUX|VerbForm=Inf     0.9732    0.9797    0.9764       148
+                                                   VERB|Mood=Imp|VerbForm=Fin     0.8731    0.7267    0.7932       161
+                  PRON|Case=Nom|Gender=Neut|Number=Sing|Person=3|PronType=Prs     0.9928    0.9928    0.9928       139
+                    AUX|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin     0.8811    0.9692    0.9231       130
+                                                VERB|Tense=Past|VerbForm=Part     0.9766    0.9328    0.9542       134
+                                                            PRON|PronType=Rel     0.9308    0.9453    0.9380       128
+                    AUX|Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin     0.8846    0.9504    0.9163       121
+                    AUX|Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin     0.9836    0.9836    0.9836       122
+                                                             ADV|PronType=Dem     0.9828    0.9913    0.9870       115
+                              PRON|Case=Nom|Number=Plur|Person=1|PronType=Prs     1.0000    1.0000    1.0000       112
+                                                 DET|Number=Sing|PronType=Dem     0.9643    0.9908    0.9774       109
+                     PRON|Case=Gen|Number=Sing|Person=1|Poss=Yes|PronType=Prs     0.9908    1.0000    0.9954       108
+                   VERB|Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin     0.9091    0.8738    0.8911       103
+                                                             DET|PronType=Ind     0.9898    0.9798    0.9848        99
+                              PRON|Case=Nom|Number=Plur|Person=3|PronType=Prs     0.9895    1.0000    0.9947        94
+                   VERB|Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin     0.9222    0.8384    0.8783        99
+                                                                       INTJ|_     0.8837    0.7677    0.8216        99
+                                                            VERB|VerbForm=Ger     0.6848    0.6923    0.6885        91
+                                                               ADJ|Degree=Sup     0.9000    0.9419    0.9205        86
+                                                            PROPN|Number=Plur     0.7033    0.7619    0.7314        84
+                                                                      PROPN|_     0.9878    0.8901    0.9364        91
+                                                NUM|NumForm=Word|NumType=Card     0.9286    0.9286    0.9286        84
+                                                PRON|Number=Sing|PronType=Dem     0.9875    0.9634    0.9753        82
+                                                             ADV|PronType=Int     0.9146    0.9740    0.9434        77
+                                          PRON|Case=Acc|Person=2|PronType=Prs     0.9114    0.9730    0.9412        74
+                              PRON|Case=Acc|Number=Sing|Person=1|PronType=Prs     1.0000    0.9857    0.9928        70
+                                                                        SYM|_     0.8070    0.5679    0.6667        81
+                                                             DET|PronType=Tot     0.9155    0.9848    0.9489        66
+                  PRON|Case=Acc|Gender=Neut|Number=Sing|Person=3|PronType=Prs     0.9853    0.9853    0.9853        68
+                  PRON|Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs     0.9851    1.0000    0.9925        66
+                                 PRON|Case=Gen|Person=2|Poss=Yes|PronType=Prs     1.0000    1.0000    1.0000        65
+                                                            PRON|PronType=Int     0.8000    0.9123    0.8525        57
+                    AUX|Mood=Ind|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin     0.9661    0.9500    0.9580        60
+                   VERB|Mood=Ind|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin     0.9167    0.9821    0.9483        56
+                                                PRON|Number=Sing|PronType=Ind     0.9474    1.0000    0.9730        54
+                   VERB|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin     0.8298    0.7358    0.7800        53
+                     PRON|Case=Gen|Number=Plur|Person=1|Poss=Yes|PronType=Prs     1.0000    1.0000    1.0000        49
+                                                            PRON|PronType=Dem     0.9787    0.9787    0.9787        47
+                              PRON|Case=Acc|Number=Plur|Person=3|PronType=Prs     0.9375    1.0000    0.9677        45
+                                                               ADJ|Degree=Cmp     0.7755    0.8636    0.8172        44
+         PRON|Case=Gen|Gender=Masc|Number=Sing|Person=3|Poss=Yes|PronType=Prs     0.9756    1.0000    0.9877        40
+                    AUX|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin     0.9231    0.9474    0.9351        38
+                                                 AUX|Tense=Past|VerbForm=Part     1.0000    1.0000    1.0000        38
+                                                               ADV|Degree=Pos     0.9444    0.8947    0.9189        38
+                                                             DET|PronType=Neg     0.9459    0.9722    0.9589        36
+                   VERB|Mood=Ind|Number=Plur|Person=1|Tense=Pres|VerbForm=Fin     0.9429    0.9429    0.9429        35
+                                                                          X|_     0.1892    0.2414    0.2121        29
+                    AUX|Mood=Ind|Number=Plur|Person=1|Tense=Pres|VerbForm=Fin     0.9310    0.7941    0.8571        34
+                                                               ADV|Degree=Cmp     0.8333    0.7576    0.7937        33
+                                                 DET|Number=Plur|PronType=Dem     0.9000    1.0000    0.9474        27
+                                                             ADV|PronType=Ind     0.9583    0.7931    0.8679        29
+                     PRON|Case=Gen|Number=Plur|Person=3|Poss=Yes|PronType=Prs     0.9615    0.9615    0.9615        26
+                   VERB|Mood=Ind|Number=Plur|Person=1|Tense=Past|VerbForm=Fin     0.9474    1.0000    0.9730        18
+                                  NUM|ExtPos=PROPN|NumForm=Digit|NumType=Card     1.0000    0.6087    0.7568        23
+                                                    AUX|Mood=Imp|VerbForm=Fin     0.8421    0.9412    0.8889        17
+         PRON|Case=Gen|Gender=Neut|Number=Sing|Person=3|Poss=Yes|PronType=Prs     0.8889    1.0000    0.9412        16
+                   PRON|Case=Nom|Gender=Fem|Number=Sing|Person=3|PronType=Prs     1.0000    1.0000    1.0000        17
+                   VERB|Mood=Ind|Number=Sing|Person=2|Tense=Past|VerbForm=Fin     0.9375    0.8824    0.9091        17
+                  PRON|Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs     1.0000    1.0000    1.0000        16
+                                                             ADV|PronType=Neg     1.0000    0.9375    0.9677        16
+                              PRON|Case=Acc|Number=Plur|Person=1|PronType=Prs     0.9375    1.0000    0.9677        15
+           AUX|Mood=Ind|Number=Sing|Person=3|Tense=Pres|Typo=Yes|VerbForm=Fin     0.8235    1.0000    0.9032        14
+                                                             NOUN|Number=Ptan     0.8000    0.1739    0.2857        23
+                                                               ADV|Degree=Sup     0.9000    0.5000    0.6429        18
+                                                PRON|Number=Sing|PronType=Tot     1.0000    0.8667    0.9286        15
+                                                               SYM|ExtPos=ADP     0.5294    0.9000    0.6667        10
+                                                   PART|Polarity=Neg|Typo=Yes     0.8571    1.0000    0.9231        12
+                                                             DET|PronType=Int     0.7778    0.4667    0.5833        15
+          PRON|Case=Gen|Gender=Fem|Number=Sing|Person=3|Poss=Yes|PronType=Prs     0.9167    0.9167    0.9167        12
+                    AUX|Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin     0.4000    0.1176    0.1818        17
+                                                             ADV|PronType=Tot     1.0000    0.5714    0.7273        14
+                   PRON|Case=Acc|Gender=Fem|Number=Sing|Person=3|PronType=Prs     0.9091    0.9091    0.9091        11
+                                      ADJ|Degree=Pos|NumForm=Word|NumType=Ord     0.6000    0.5455    0.5714        11
+                                               NUM|NumForm=Roman|NumType=Card     0.0000    0.0000    0.0000        20
+                                                PRON|Number=Plur|PronType=Dem     1.0000    0.6667    0.8000        12
+                                               NUM|NumForm=Digit|NumType=Frac     0.5000    0.0556    0.1000        18
+                                                             ADV|PronType=Rel     0.5714    0.3333    0.4211        12
+                                                            INTJ|Polarity=Pos     0.9000    1.0000    0.9474         9
+                                   NOUN|Number=Sing|NumForm=Combi|NumType=Ord     1.0000    0.5833    0.7368        12
+                                                                PART|Typo=Yes     0.8750    0.6364    0.7368        11
+                                                 AUX|Tense=Pres|VerbForm=Part     1.0000    1.0000    1.0000         9
+                                                              SYM|Number=Sing     1.0000    0.8000    0.8889        10
+                                                PRON|Number=Sing|PronType=Neg     0.5556    0.6250    0.5882         8
+                                                            INTJ|Polarity=Neg     1.0000    0.7778    0.8750         9
+                                                    ADJ|Degree=Pos|ExtPos=ADP     1.0000    1.0000    1.0000         7
+                                                               ADV|ExtPos=ADV     0.8571    0.8571    0.8571         7
+                                                      ADJ|Degree=Pos|Typo=Yes     0.0000    0.0000    0.0000        14
+                                                               ADP|ExtPos=ADV     1.0000    0.4444    0.6154         9
+                                                    NOUN|Number=Sing|Typo=Yes     0.0000    0.0000    0.0000        13
+                                                               ADP|ExtPos=ADP     0.7500    0.3750    0.5000         8
+                                     VERB|ExtPos=ADP|Tense=Pres|VerbForm=Part     1.0000    1.0000    1.0000         6
+                                                                 ADV|Typo=Yes     0.0000    0.0000    0.0000        12
+                                                ADV|NumForm=Word|NumType=Mult     0.8333    0.8333    0.8333         6
+           AUX|Mood=Ind|Number=Sing|Person=1|Tense=Pres|Typo=Yes|VerbForm=Fin     1.0000    0.7143    0.8333         7
+                                                   PROPN|Abbr=Yes|Number=Sing     0.0000    0.0000    0.0000         8
+                                                                X|Foreign=Yes     0.0000    0.0000    0.0000         9
+                                                             ADV|ExtPos=CCONJ     0.5000    0.5000    0.5000         4
+                                                   PROPN|Number=Sing|Typo=Yes     0.0000    0.0000    0.0000         7
+                   PRON|Case=Acc|Number=Sing|Person=1|PronType=Prs|Reflex=Yes     0.5000    0.6667    0.5714         3
+                                                           SCONJ|ExtPos=SCONJ     0.0000    0.0000    0.0000         6
+                    AUX|Mood=Ind|Number=Sing|Person=2|Tense=Past|VerbForm=Fin     1.0000    1.0000    1.0000         3
+                    AUX|Mood=Ind|Number=Plur|Person=1|Tense=Past|VerbForm=Fin     1.0000    1.0000    1.0000         3
+                                                               PROPN|Typo=Yes     0.0000    0.0000    0.0000         6
+                                                                 ADP|Typo=Yes     0.0000    0.0000    0.0000         6
+                                                    NOUN|Abbr=Yes|Number=Plur     1.0000    0.5000    0.6667         4
+                                                    NOUN|Number=Plur|Typo=Yes     0.0000    0.0000    0.0000         5
+                                                      SYM|Abbr=Yes|ExtPos=ADP     1.0000    0.2500    0.4000         4
+PRON|Case=Gen|Gender=Neut|Number=Sing|Person=3|Poss=Yes|PronType=Prs|Typo=Yes     0.0000    0.0000    0.0000         5
+                                                    ADJ|Degree=Cmp|ExtPos=ADV     1.0000    0.2500    0.4000         4
+          VERB|Mood=Ind|Number=Plur|Person=3|Tense=Pres|Typo=Yes|VerbForm=Fin     0.0000    0.0000    0.0000         5
+                                                 ADV|NumForm=Word|NumType=Ord     0.3333    0.5000    0.4000         2
+                                                            PRON|PronType=Neg     1.0000    0.3333    0.5000         3
+                        PRON|Case=Gen|Person=2|Poss=Yes|PronType=Prs|Typo=Yes     0.0000    0.0000    0.0000         4
+                                                           CCONJ|Polarity=Neg     0.0000    0.0000    0.0000         4
+                                                               X|ExtPos=PROPN     0.0000    0.0000    0.0000         4
+                                   NOUN|Number=Sing|NumForm=Word|NumType=Frac     0.0000    0.0000    0.0000         2
+                                  NOUN|Number=Ptan|NumForm=Combi|NumType=Card     1.0000    0.5000    0.6667         2
+                            VERB|Tense=Past|Typo=Yes|VerbForm=Part|Voice=Pass     0.0000    0.0000    0.0000         3
+                   VERB|Mood=Sub|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin     0.0000    0.0000    0.0000         3
+                                                                PART|Abbr=Yes     0.0000    0.0000    0.0000         3
+                                                               SCONJ|Abbr=Yes     0.0000    0.0000    0.0000         3
+                              PRON|Number=Sing|Person=1|Poss=Yes|PronType=Prs     0.0000    0.0000    0.0000         3
+           AUX|Mood=Ind|Number=Plur|Person=3|Tense=Pres|Typo=Yes|VerbForm=Fin     0.0000    0.0000    0.0000         3
+                                                                        NUM|_     0.0000    0.0000    0.0000         3
+                                       NUM|Abbr=Yes|NumForm=Word|NumType=Card     0.0000    0.0000    0.0000         3
+          VERB|Mood=Ind|Number=Sing|Person=3|Tense=Pres|Typo=Yes|VerbForm=Fin     0.0000    0.0000    0.0000         3
+                                                   VERB|Typo=Yes|VerbForm=Inf     0.0000    0.0000    0.0000         3
+            PRON|Case=Gen|Number=Plur|Person=3|Poss=Yes|PronType=Prs|Typo=Yes     0.0000    0.0000    0.0000         3
+                                                    AUX|Typo=Yes|VerbForm=Fin     0.0000    0.0000    0.0000         2
+                    AUX|Mood=Sub|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin     0.0000    0.0000    0.0000         2
+                                     ADJ|Degree=Pos|NumForm=Combi|NumType=Ord     0.0000    0.0000    0.0000         2
+                                               PART|ExtPos=CCONJ|Polarity=Neg     0.0000    0.0000    0.0000         2
+                                                               ADV|ExtPos=ADP     0.0000    0.0000    0.0000         2
+                                                               CCONJ|Abbr=Yes     0.0000    0.0000    0.0000         2
+                                       DET|Definite=Def|PronType=Art|Typo=Yes     0.0000    0.0000    0.0000         2
+                                                               CCONJ|Typo=Yes     0.0000    0.0000    0.0000         2
+                                                             DET|PronType=Rel     0.0000    0.0000    0.0000         2
+                                                             INTJ|Foreign=Yes     0.0000    0.0000    0.0000         2
+                                       PRON|Number=Sing|Person=3|PronType=Prs     0.0000    0.0000    0.0000         1
+                    AUX|Mood=Sub|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin     0.0000    0.0000    0.0000         1
+                                                    ADV|PronType=Dem|Typo=Yes     0.0000    0.0000    0.0000         1
+                                                 PRON|PronType=Int|Style=Expr     0.0000    0.0000    0.0000         1
+                                                             ADV|ExtPos=SCONJ     0.0000    0.0000    0.0000         1
+                                       VERB|Abbr=Yes|Tense=Pres|VerbForm=Part     0.0000    0.0000    0.0000         1
+           AUX|Mood=Ind|Number=Sing|Person=2|Tense=Pres|Typo=Yes|VerbForm=Fin     0.0000    0.0000    0.0000         1
+                                                NOUN|ExtPos=PROPN|Number=Sing     0.0000    0.0000    0.0000         1
+                                   DET|NumForm=Word|NumType=Frac|PronType=Ind     0.0000    0.0000    0.0000         1
+                                                             ADP|ExtPos=SCONJ     0.0000    0.0000    0.0000         1
+                                 PRON|Abbr=Yes|Case=Nom|Person=2|PronType=Prs     0.0000    0.0000    0.0000         1
+                                                   PROPN|Number=Plur|Typo=Yes     0.0000    0.0000    0.0000         1
+                                       PRON|Number=Sing|PronType=Ind|Typo=Yes     0.0000    0.0000    0.0000         1
+                                                   INTJ|Polarity=Pos|Typo=Yes     0.0000    0.0000    0.0000         1
+          VERB|Mood=Ind|Number=Sing|Person=1|Tense=Pres|Typo=Yes|VerbForm=Fin     0.0000    0.0000    0.0000         1
+                                                   PRON|PronType=Dem|Typo=Yes     0.0000    0.0000    0.0000         1
+                                                  ADV|ExtPos=ADV|PronType=Int     0.0000    0.0000    0.0000         1
+                   PRON|Case=Acc|Number=Sing|Person=2|PronType=Prs|Reflex=Yes     0.0000    0.0000    0.0000         1
+                                                   VERB|Abbr=Yes|VerbForm=Inf     0.0000    0.0000    0.0000         1
+                                                   PROPN|Abbr=Yes|Number=Plur     0.0000    0.0000    0.0000         1
+                                                   VERB|Typo=Yes|VerbForm=Ger     0.0000    0.0000    0.0000         1
+                                                               ADV|Style=Expr     0.0000    0.0000    0.0000         1
+                                                    AUX|Abbr=Yes|VerbForm=Inf     0.0000    0.0000    0.0000         1
+                                                               SCONJ|Typo=Yes     0.0000    0.0000    0.0000         1
+                     PRON|Case=Nom|Number=Plur|Person=3|PronType=Prs|Typo=Yes     0.0000    0.0000    0.0000         1
+                                                              INTJ|Style=Expr     0.0000    0.0000    0.0000         1
+                                                    ADJ|Degree=Pos|Style=Expr     0.0000    0.0000    0.0000         1
+                        PRON|Abbr=Yes|Case=Gen|Person=2|Poss=Yes|PronType=Prs     0.0000    0.0000    0.0000         1
+                                                                 ADV|Abbr=Yes     0.0000    0.0000    0.0000         1
+                                                            PROPN|Number=Ptan     0.0000    0.0000    0.0000         1
+                                                                 ADP|Abbr=Yes     0.0000    0.0000    0.0000         1
+          VERB|Mood=Ind|Number=Sing|Person=3|Tense=Past|Typo=Yes|VerbForm=Fin     0.0000    0.0000    0.0000         1
+                                                      ADJ|Degree=Sup|Typo=Yes     0.0000    0.0000    0.0000         1
+                                        VERB|Style=Vrnc|Typo=Yes|VerbForm=Ger     0.0000    0.0000    0.0000         1
+                                                        ADV|Abbr=Yes|Typo=Yes     0.0000    0.0000    0.0000         1
+          VERB|Mood=Ind|Number=Plur|Person=3|Tense=Past|Typo=Yes|VerbForm=Fin     0.0000    0.0000    0.0000         1
+                                       PRON|Number=Sing|PronType=Tot|Typo=Yes     0.0000    0.0000    0.0000         1
+                                                 DET|ExtPos=PRON|PronType=Rcp     0.0000    0.0000    0.0000         1
+                                      DET|Number=Plur|PronType=Dem|Style=Vrnc     0.0000    0.0000    0.0000         1
+                                       VERB|Tense=Past|Typo=Yes|VerbForm=Part     0.0000    0.0000    0.0000         1
+            PRON|Case=Gen|Number=Plur|Person=1|Poss=Yes|PronType=Prs|Typo=Yes     0.0000    0.0000    0.0000         1
+
+                                                                     accuracy                         0.9395     25086
+                                                                    macro avg     0.5492    0.5121    0.5208     25086
+                                                                 weighted avg     0.9312    0.9395    0.9342     25086

@@ -1,7 +1,3 @@
-/content/morphology
-/content/morphology/services/training/models/train_roberta.py:8: SyntaxWarning: invalid escape sequence '\D'
-  cd c:\Diploma\morphology
-
 ============================================================
   Training: roberta-base
   Output:   services/models/en/roberta-base
