@@ -1,0 +1,18 @@
+# Backend dependencies for Morphology Analyzer API
+
+# FastAPI
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# ML / Transformers
+torch>=2.0.0
+transformers>=4.35.0
+safetensors>=0.4.0
+
+# Flair (for BiLSTM + CRF models)
+flair>=0.13.0
+
+# Utilities
+numpy>=1.24.0
