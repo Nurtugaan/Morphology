@@ -3,6 +3,7 @@ Pydantic schemas for API requests and responses
 """
 from pydantic import BaseModel, Field
 from typing import Optional
+from enum import Enum
 
 
 class AnalyzeRequest(BaseModel):
@@ -10,13 +11,15 @@ class AnalyzeRequest(BaseModel):
     text: str = Field(..., min_length=1, max_length=5000, description="Text to analyze")
     model_name: str = Field(default="distilbert", description="Model to use: distilbert, bert, roberta, albert")
 
-    class Config:
-        json_schema_extra = {
+    model_config = {
+        "protected_namespaces": (),
+        "json_schema_extra": {
             "example": {
                 "text": "The cat sat on the mat.",
                 "model_name": "distilbert"
             }
         }
+    }
 
 
 class TokenAnalysis(BaseModel):
@@ -34,8 +37,9 @@ class AnalyzeResponse(BaseModel):
     tokens: list[TokenAnalysis] = Field(..., description="Analysis results per token")
     processing_time_ms: float = Field(..., description="Processing time in milliseconds")
 
-    class Config:
-        json_schema_extra = {
+    model_config = {
+        "protected_namespaces": (),
+        "json_schema_extra": {
             "example": {
                 "model_name": "distilbert",
                 "text": "The cat sat.",
@@ -48,6 +52,7 @@ class AnalyzeResponse(BaseModel):
                 "processing_time_ms": 45.2
             }
         }
+    }
 
 
 class ModelInfo(BaseModel):
@@ -56,6 +61,18 @@ class ModelInfo(BaseModel):
     name: str = Field(..., description="Display name")
     description: str = Field(..., description="Model description")
     loaded: bool = Field(default=False, description="Whether model is currently loaded")
+    
+    # Evaluation metrics
+    accuracy: Optional[float] = Field(None, description="Test set accuracy (0-1)")
+    precision: Optional[float] = Field(None, description="Test set precision (macro, 0-1)")
+    recall: Optional[float] = Field(None, description="Test set recall (macro, 0-1)")
+    f1: Optional[float] = Field(None, description="Test set macro F1 (0-1)")
+    parameters: Optional[str] = Field(None, description="Number of model parameters, e.g. '66M'")
+    architecture: Optional[str] = Field(None, description="Model architecture type")
+    training_time: Optional[str] = Field(None, description="Training time")
+    
+    # Training hyperparameters
+    training_config: Optional[dict] = Field(None, description="Training hyperparameters")
 
 
 class ModelsResponse(BaseModel):

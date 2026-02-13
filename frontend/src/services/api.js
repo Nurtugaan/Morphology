@@ -3,13 +3,33 @@
  */
 
 const API_BASE = '/api';
+const TIMEOUT_MS = 10000;
+
+/**
+ * Fetch with timeout
+ */
+async function fetchWithTimeout(url, options = {}) {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), TIMEOUT_MS);
+    try {
+        const response = await fetch(url, { ...options, signal: controller.signal });
+        return response;
+    } catch (err) {
+        if (err.name === 'AbortError') {
+            throw new Error('Request timed out. Is the backend running?');
+        }
+        throw err;
+    } finally {
+        clearTimeout(id);
+    }
+}
 
 /**
  * Fetch available models
  * @returns {Promise<{models: Array, default_model: string}>}
  */
 export async function getModels() {
-    const response = await fetch(`${API_BASE}/models`);
+    const response = await fetchWithTimeout(`${API_BASE}/models`);
     if (!response.ok) {
         throw new Error(`Failed to fetch models: ${response.statusText}`);
     }
@@ -23,7 +43,7 @@ export async function getModels() {
  * @returns {Promise<{model_name: string, text: string, tokens: Array, processing_time_ms: number}>}
  */
 export async function analyzeText(text, modelName) {
-    const response = await fetch(`${API_BASE}/analyze`, {
+    const response = await fetchWithTimeout(`${API_BASE}/analyze`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

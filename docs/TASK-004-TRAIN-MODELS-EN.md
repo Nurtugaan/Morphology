@@ -1,15 +1,15 @@
-# TASK-004: English Morphological Model Training Pipeline
+# TASK-004: Обучение моделей морфологического анализа на английском языке
 
-## Обзор
-
-Данный документ описывает техническое задание на реализацию пайплайна обучения трансформер-моделей для задачи морфологического анализа (token classification) на английском языке. Пайплайн использует предобработанные данные из TASK-003 и модели-кандидаты из TASK-001.
+**Дата:** 2026-02-06  
+**Статус:** ✅ Выполнено  
+**Задача:** Обучить выбранные модели на объединённом корпусе UD English EWT + GUM и зафиксировать метрики
 
 ---
 
-## Цели задачи
+## Цель
 
 1. **Реализовать training loop** для обучения трансформер-моделей на задачу token classification
-2. **Обучить выбранные модели** (BERT-base, RoBERTa-base, DistilBERT) на английском датасете
+2. **Обучить 5 моделей** (BERT-base, RoBERTa-base, DistilBERT, ALBERT-base, Flair) на englsh датасете
 3. **Зафиксировать гиперпараметры** и обеспечить воспроизводимость экспериментов
 4. **Получить baseline-результаты** для последующего сравнения с казахскими моделями
 
@@ -17,33 +17,14 @@
 
 ## Входные данные
 
-### Источники данных
-
 Данные поступают из TASK-003 (предобработка):
 
 | Источник | Описание |
 |----------|----------|
 | `en_preprocessing.py` | Модуль загрузки и предобработки данных |
-| `UD_English-EWT` | Основной обучающий датасет (~205k токенов) |
-| `UD_English-GUM` | Дополнительный датасет для валидации (~135k токенов) |
-
-### Формат данных
-
-```python
-{
-    'tokens': ['The', 'cat', 'sat'],
-    'labels': ['DET|Definite=Def', 'NOUN|Number=Sing', 'VERB|Tense=Past'],
-    'label_ids': [5, 23, 45],
-    'sentence_id': '...',
-    'text': 'The cat sat'
-}
-```
-
-### Словарь меток
-
-- **label2id**: `Dict[str, int]` — метка → индекс
-- **id2label**: `Dict[int, str]` — индекс → метка
-- Ожидаемое количество меток: ~300-500 уникальных комбинаций `UPOS|FEATS`
+| `UD_English-EWT` | Основной обучающий датасет (204 577 токенов) |
+| `UD_English-GUM` | Дополнительный датасет (177 410 токенов) |
+| **Объединённый** | **381 987 токенов / 406 уникальных меток** |
 
 ---
 
@@ -51,22 +32,21 @@
 
 На основании TASK-001 выбраны следующие модели:
 
-| Модель | Архитектура | Размер / Параметры | HuggingFace ID | Задачи | Почему выбрана |
-|--------|-------------|-------------------|----------------|--------|----------------|
-| **BERT-base** | BERT | base / 110M | `bert-base-uncased` | POS, Morphology, NER | Классическая базовая модель для точного анализа, проверена на английском |
-| **RoBERTa-base** | RoBERTa | base / 125M | `roberta-base` | POS, Token Classification | Улучшенная предобученность, хороший контекст для token-level задач |
-| **DistilBERT** | BERT | small / 66M | `distilbert-base-uncased` | POS, Token Classification | Быстрая и лёгкая, удобна для прототипов и сравнений скорости |
-| **ALBERT-base** | ALBERT | base / 12M | `albert-base-v2` | POS, Morphology | Экономная по памяти, другой подход в архитектуре (factorized weights) |
-| **Flair** | LSTM+Char | — | `flair` (библиотека) | POS, NER | Другая архитектура (RNN+char embeddings), хорошо для экспериментов и контраст с трансформерами |
+| Модель | Архитектура | Параметры | HuggingFace ID | Обоснование |
+|--------|-------------|-----------|----------------|------------|
+| **BERT-base** | BERT | 109M | `bert-base-uncased` | Классический baseline |
+| **RoBERTa-base** | RoBERTa | 125M | `roberta-base` | Улучшенная предобученность |
+| **DistilBERT** | BERT (distilled) | 66M | `distilbert-base-uncased` | Быстрая и лёгкая |
+| **ALBERT-base** | ALBERT | 12M | `albert-base-v2` | Экономная по памяти |
+| **Flair** | BiLSTM+CRF | 63M | `flair` (библиотека) | Альтернативная архитектура |
 
-> [!NOTE]
-> Flair использует отдельную библиотеку `flair` и требует особого подхода к обучению (не HuggingFace Transformers).
+> **Примечание:** Flair использует отдельную библиотеку `flair` и требует особого подхода к обучению (не HuggingFace Transformers).
 
 ---
 
 ## Архитектура модели
 
-### Схема
+### Схема (трансформеры)
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -84,7 +64,7 @@
                       ▼
 ┌─────────────────────────────────────────────────────────┐
 │              Transformer Encoder                        │
-│         (BERT / RoBERTa / DistilBERT)                  │
+│         (BERT / RoBERTa / DistilBERT / ALBERT)         │
 │                                                         │
 │   Выход: [batch_size, seq_len, hidden_size]            │
 │          hidden_size = 768 (base models)                │
@@ -98,9 +78,7 @@
                       ▼
 ┌─────────────────────────────────────────────────────────┐
 │            Linear Classification Head                   │
-│         (hidden_size → num_labels)                      │
-│                                                         │
-│   Выход: [batch_size, seq_len, num_labels]             │
+│         (hidden_size → num_labels=406)                  │
 └─────────────────────┬───────────────────────────────────┘
                       │
                       ▼
@@ -111,10 +89,36 @@
 └─────────────────────────────────────────────────────────┘
 ```
 
+### Схема (Flair)
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Input Tokens                         │
+└─────────────────────┬───────────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────────┐
+│         Stacked Flair Embeddings (fwd + bwd)           │
+│   LanguageModel(Embedding(300,100) → LSTM(100,2048))   │
+│         Выход: [batch_size, seq_len, 4096]             │
+└─────────────────────┬───────────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────────┐
+│        BiLSTM (4096 → 256×2, 2 layers, dropout=0.5)   │
+└─────────────────────┬───────────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────────┐
+│             Linear (512 → 326) + CRF                   │
+│             ViterbiLoss / Viterbi Decode                │
+└─────────────────────────────────────────────────────────┘
+```
+
 ### Выравнивание субтокенов (Label Alignment)
 
-При субсловной токенизации необходимо:
-- Назначить метку **только первому субтокену** слова
+При субсловной токенизации:
+- Метка назначается **только первому субтокену** слова
 - Все последующие субтокены получают метку `-100` (игнорируются при расчёте loss)
 - Специальные токены (`[CLS]`, `[SEP]`, `[PAD]`) также получают `-100`
 
@@ -129,264 +133,113 @@ Labels:     [LABEL_ID, -100, -100]
 
 ## Гиперпараметры
 
-### Основные параметры
+### Трансформер-модели
 
-| Параметр | Значение | Описание |
-|----------|----------|----------|
-| `learning_rate` | 2e-5 | Начальная скорость обучения |
-| `batch_size` | 16 | Размер батча (на GPU) |
-| `epochs` | 3-5 | Количество эпох обучения |
-| `max_length` | 128 | Максимальная длина последовательности |
-| `warmup_ratio` | 0.1 | Доля шагов для warmup |
-| `weight_decay` | 0.01 | Регуляризация весов |
-| `gradient_accumulation` | 2 | Шаги накопления градиента |
+| Параметр | BERT | RoBERTa | DistilBERT | ALBERT |
+|----------|------|---------|------------|--------|
+| `learning_rate` | 2e-5 | 2e-5 | 3e-5 | 2e-5 |
+| `batch_size` | 32 | 32 | 32 | 64 |
+| `epochs` | 5 | 5 | 6 | 6 |
+| `max_length` | 128 | 128 | 128 | 128 |
+| `warmup_ratio` | 0.1 | 0.1 | 0.1 | 0.1 |
+| `weight_decay` | 0.01 | 0.01 | 0.01 | 0.01 |
+| `gradient_accumulation` | 2 | 2 | 2 | 2 |
+| `dropout` | 0.1 | 0.1 | 0.1 | 0.1 |
+| `seed` | 42 | 42 | 42 | 42 |
 
-### Оптимизатор
+### Flair
 
-- **Optimizer**: AdamW с bias correction
-- **Scheduler**: Linear scheduler with warmup
+| Параметр | Значение |
+|----------|----------|
+| `learning_rate` | 0.1 (SGD) |
+| `mini_batch_size` | 16 |
+| `max_epochs` | 5 |
+| `embeddings` | Flair forward + backward |
+| `hidden_size` | 256 |
+| `rnn_layers` | 2 |
+| `use_crf` | True |
 
-```python
-optimizer = AdamW(
-    model.parameters(),
-    lr=2e-5,
-    betas=(0.9, 0.999),
-    eps=1e-8,
-    weight_decay=0.01
-)
+### Общие параметры
 
-scheduler = get_linear_schedule_with_warmup(
-    optimizer,
-    num_warmup_steps=warmup_steps,
-    num_training_steps=total_steps
-)
-```
-
-### Функция потерь
-
-- **Loss Function**: CrossEntropyLoss с `ignore_index=-100`
-
-```python
-criterion = nn.CrossEntropyLoss(ignore_index=-100)
-```
+- **Optimizer**: AdamW (трансформеры) / SGD (Flair)
+- **Scheduler**: Linear with warmup (трансформеры) / AnnealOnPlateau (Flair)
+- **Loss**: CrossEntropyLoss с `ignore_index=-100` (трансформеры) / ViterbiLoss (Flair)
+- **Device**: CUDA (GPU)
 
 ---
 
 ## Структура кода
 
-### Файловая структура
-
 ```
-services/
-├── training/
-│   ├── en_training.py          # Основной модуль обучения
-│   ├── trainer.py              # Класс Trainer
-│   ├── dataset.py              # PyTorch Dataset для токенов
-│   ├── model.py                # Обёртка над трансформерами
-│   ├── utils.py                # Вспомогательные функции
-│   └── config.py               # Конфигурация гиперпараметров
-│
-├── models/
-│   └── en/
-│       ├── bert-base/          # Обученная модель BERT
-│       ├── roberta-base/       # Обученная модель RoBERTa
-│       ├── distilbert/         # Обученная модель DistilBERT
-│       ├── albert-base/        # Обученная модель ALBERT
-│       └── flair/              # Обученная модель Flair
-│
-└── logs/
-    └── english/
-        ├── training_logs.json  # Логи обучения
-        └── tensorboard/        # TensorBoard логи
-```
-
-### Основные компоненты
-
-#### 1. TokenClassificationDataset
-
-```python
-class TokenClassificationDataset(Dataset):
-    """
-    PyTorch Dataset для задачи token classification.
-    
-    Выполняет:
-    - Токенизацию с помощью HuggingFace tokenizer
-    - Выравнивание меток (label alignment)
-    - Паддинг и создание attention mask
-    """
-    
-    def __init__(
-        self,
-        sentences: List[Sentence],
-        tokenizer: PreTrainedTokenizer,
-        label2id: Dict[str, int],
-        max_length: int = 128
-    ):
-        ...
-    
-    def __getitem__(self, idx) -> Dict[str, torch.Tensor]:
-        """
-        Returns:
-            input_ids: [max_length]
-            attention_mask: [max_length]
-            labels: [max_length]
-        """
-        ...
-```
-
-#### 2. MorphologyTagger
-
-```python
-class MorphologyTagger(nn.Module):
-    """
-    Модель для морфологического анализа на основе трансформеров.
-    
-    Архитектура:
-    - Pre-trained transformer encoder
-    - Dropout layer
-    - Linear classification head
-    """
-    
-    def __init__(
-        self,
-        model_name: str,
-        num_labels: int,
-        dropout: float = 0.1
-    ):
-        ...
-    
-    def forward(
-        self,
-        input_ids: torch.Tensor,
-        attention_mask: torch.Tensor,
-        labels: Optional[torch.Tensor] = None
-    ) -> Dict[str, torch.Tensor]:
-        """
-        Returns:
-            loss: Scalar tensor (if labels provided)
-            logits: [batch_size, seq_len, num_labels]
-        """
-        ...
-```
-
-#### 3. Trainer
-
-```python
-class Trainer:
-    """
-    Класс для обучения и валидации модели.
-    
-    Функции:
-    - Training loop с gradient accumulation
-    - Validation с вычислением метрик
-    - Сохранение чекпоинтов
-    - Early stopping
-    - Logging (console + TensorBoard + JSON)
-    """
-    
-    def __init__(
-        self,
-        model: nn.Module,
-        train_loader: DataLoader,
-        val_loader: DataLoader,
-        optimizer: Optimizer,
-        scheduler: LRScheduler,
-        config: TrainingConfig
-    ):
-        ...
-    
-    def train_epoch(self) -> Dict[str, float]:
-        """Обучение одной эпохи."""
-        ...
-    
-    def validate(self) -> Dict[str, float]:
-        """Валидация модели."""
-        ...
-    
-    def train(self, num_epochs: int) -> Dict[str, Any]:
-        """Полный цикл обучения."""
-        ...
-    
-    def save_checkpoint(self, path: str):
-        """Сохранение модели и состояния."""
-        ...
+services/training/
+├── __init__.py           # Экспорты
+├── config.py             # TrainingConfig — конфигурация гиперпараметров
+├── dataset.py            # TokenClassificationDataset — PyTorch Dataset
+├── model.py              # MorphologyTagger — обёртка над трансформерами
+├── trainer.py            # Trainer — training loop, валидация, early stopping
+├── train_base.py         # Скрипт запуска обучения
+└── models/               # Скрипты обучения конкретных моделей
 ```
 
 ---
 
-## Training Loop
+## Фактические результаты обучения
 
-### Алгоритм обучения
+### Динамика обучения (val F1 по эпохам)
 
-```python
-def training_step(batch, model, optimizer, scheduler, accumulation_steps):
-    """
-    Один шаг обучения с gradient accumulation.
-    """
-    model.train()
-    
-    # Forward pass
-    outputs = model(
-        input_ids=batch['input_ids'],
-        attention_mask=batch['attention_mask'],
-        labels=batch['labels']
-    )
-    
-    loss = outputs['loss'] / accumulation_steps
-    
-    # Backward pass
-    loss.backward()
-    
-    # Gradient clipping
-    torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-    
-    # Optimizer step (каждые accumulation_steps)
-    if (step + 1) % accumulation_steps == 0:
-        optimizer.step()
-        scheduler.step()
-        optimizer.zero_grad()
-    
-    return loss.item() * accumulation_steps
+| Эпоха | BERT | RoBERTa | DistilBERT | ALBERT | Flair |
+|-------|------|---------|------------|--------|-------|
+| 1 | 0.3658 | 0.3448 | 0.3844 | 0.3413 | — |
+| 2 | 0.4858 | 0.4755 | 0.4889 | 0.4729 | — |
+| 3 | 0.5085 | 0.5169 | 0.5365 | 0.5097 | — |
+| 4 | 0.5371 | 0.5291 | 0.5569 | 0.5195 | — |
+| 5 | 0.5468 | 0.5306 | 0.5645 | 0.5357 | — |
+| 6 | — | — | 0.5768 | 0.5463 | — |
+
+### Итоговые результаты (Test Set)
+
+| Модель | Accuracy | Precision | Recall | Macro-F1 | Время обучения |
+|--------|----------|-----------|--------|----------|---------------|
+| **DistilBERT** | 94.89% | 59.92% | 59.32% | **58.84%** | 25.9 мин |
+| BERT-base | 94.83% | 57.83% | 57.31% | 56.79% | 38.6 мин |
+| ALBERT-base | 94.64% | 57.71% | 56.11% | 56.09% | 49.0 мин |
+| RoBERTa-base | 94.89% | 56.45% | 56.92% | 55.90% | 38.8 мин |
+| Flair | 93.95% | 54.92% | 51.21% | 52.08% | ~30 мин |
+
+### Динамика loss (лучшая модель — DistilBERT)
+
+| Эпоха | Train Loss | Val Loss |
+|-------|-----------|----------|
+| 1 | 1.9124 | 0.2901 |
+| 2 | 0.2218 | 0.2227 |
+| 3 | 0.1579 | 0.2062 |
+| 4 | 0.1273 | 0.1997 |
+| 5 | 0.1087 | 0.1994 |
+| 6 | 0.0982 | 0.2005 |
+
+> Наблюдается стабильное снижение train loss без значительного overfitting (val loss стабилизируется с эпохи 4).
+
+---
+
+## Сохранённые модели
+
+Все обученные модели сохранены в `services/models/en/`:
+
+```
+services/models/en/
+├── bert-base_model/       # BERT-base (best F1: 0.5468, test F1: 0.5679)
+├── roberta-base_model/    # RoBERTa-base (best F1: 0.5306, test F1: 0.5590)
+├── distilbert_model/      # DistilBERT (best F1: 0.5768, test F1: 0.5884)
+├── albert-base_model/     # ALBERT-base (best F1: 0.5463, test F1: 0.5609)
+└── flair_model/           # Flair (micro F1: 0.9395, macro F1: 0.5208)
 ```
 
-### Валидация
-
-```python
-def validation_step(model, val_loader, id2label):
-    """
-    Валидация модели и вычисление метрик.
-    """
-    model.eval()
-    
-    all_predictions = []
-    all_labels = []
-    total_loss = 0
-    
-    with torch.no_grad():
-        for batch in val_loader:
-            outputs = model(
-                input_ids=batch['input_ids'],
-                attention_mask=batch['attention_mask'],
-                labels=batch['labels']
-            )
-            
-            total_loss += outputs['loss'].item()
-            
-            predictions = outputs['logits'].argmax(dim=-1)
-            
-            # Собираем предсказания (игнорируем -100)
-            for pred, label, mask in zip(predictions, batch['labels'], batch['attention_mask']):
-                for p, l, m in zip(pred, label, mask):
-                    if l != -100 and m == 1:
-                        all_predictions.append(id2label[p.item()])
-                        all_labels.append(id2label[l.item()])
-    
-    # Вычисление метрик
-    metrics = compute_metrics(all_labels, all_predictions)
-    metrics['loss'] = total_loss / len(val_loader)
-    
-    return metrics
-```
+Каждая директория содержит:
+- Веса модели (`pytorch_model.bin` / `model.safetensors`)
+- Конфигурацию (`config.json`)
+- Токенизатор (`tokenizer_config.json`, `vocab.txt`)
+- Маппинг меток (`label2id.json`)
+- Историю обучения (`training_history.json`)
 
 ---
 
@@ -401,118 +254,9 @@ def validation_step(model, val_loader, id2label):
 | **Recall** | Полнота (macro) | `avg(TP / (TP + FN))` |
 | **F1-score** | F1 мера (macro) | `2 * P * R / (P + R)` |
 
-### Дополнительные метрики
-
-- **UPOS Accuracy**: Точность только по UPOS-тегам (без FEATS)
-- **Per-class F1**: F1 для каждого класса отдельно
-- **Confusion Matrix**: Матрица ошибок для анализа
-
-```python
-from sklearn.metrics import classification_report, confusion_matrix
-
-def compute_metrics(y_true, y_pred):
-    """
-    Вычисляет все метрики для token classification.
-    """
-    report = classification_report(
-        y_true, y_pred,
-        output_dict=True,
-        zero_division=0
-    )
-    
-    return {
-        'accuracy': report['accuracy'],
-        'precision': report['macro avg']['precision'],
-        'recall': report['macro avg']['recall'],
-        'f1': report['macro avg']['f1-score'],
-        'report': report
-    }
-```
-
----
-
-## Логирование и мониторинг
-
-### Консольный вывод
-
-```
-Epoch 1/3
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100%
-Train Loss: 0.8234 | Val Loss: 0.5123
-Accuracy: 0.8456 | F1: 0.7892
-
-Epoch 2/3
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100%
-Train Loss: 0.4521 | Val Loss: 0.4012
-Accuracy: 0.8912 | F1: 0.8456
-```
-
-### JSON Logs
-
-```json
-{
-    "experiment": "bert-base-en-morphology",
-    "timestamp": "2026-02-06T00:00:00",
-    "config": {
-        "model": "bert-base-uncased",
-        "learning_rate": 2e-5,
-        "batch_size": 16,
-        "epochs": 3
-    },
-    "history": [
-        {
-            "epoch": 1,
-            "train_loss": 0.8234,
-            "val_loss": 0.5123,
-            "accuracy": 0.8456,
-            "f1": 0.7892
-        }
-    ],
-    "best_metrics": {
-        "epoch": 3,
-        "accuracy": 0.9123,
-        "f1": 0.8756
-    }
-}
-```
-
-### TensorBoard
-
-Логируются:
-- `loss/train` — loss на обучении
-- `loss/val` — loss на валидации
-- `metrics/accuracy` — точность
-- `metrics/f1` — F1-score
-- `learning_rate` — текущий learning rate
-
----
-
-## Чекпоинты
-
-### Формат сохранения
-
-```
-services/models/en/bert-base/
-├── config.json           # Конфигурация модели
-├── pytorch_model.bin     # Веса модели
-├── tokenizer_config.json # Конфигурация токенизатора
-├── vocab.txt             # Словарь токенизатора
-├── label2id.json         # Маппинг меток
-├── training_args.json    # Гиперпараметры
-└── trainer_state.json    # Состояние обучения
-```
-
-### Стратегия сохранения
-
-- **Best Model**: Сохраняется модель с лучшим F1 на валидации
-- **Last Checkpoint**: Последний чекпоинт для продолжения обучения
-- **Every N epochs**: Опционально каждые N эпох
-
 ---
 
 ## Воспроизводимость
-
-### Фиксация random seed
 
 ```python
 def set_seed(seed: int = 42):
@@ -525,119 +269,41 @@ def set_seed(seed: int = 42):
     torch.backends.cudnn.benchmark = False
 ```
 
-### Документирование эксперимента
-
-Каждый эксперимент должен содержать:
-1. Полную конфигурацию гиперпараметров
-2. Версии библиотек (`requirements.txt`)
-3. Информацию о hardware (GPU, память)
-4. Seed для воспроизводимости
-
 ---
 
 ## Запуск обучения
-
-### Командная строка
 
 ```bash
 cd c:\Diploma\morphology\services\training
 
 # Обучение BERT
-python en_training.py --model bert-base-uncased --epochs 3
+python train_base.py --model bert-base-uncased --epochs 5
 
 # Обучение RoBERTa
-python en_training.py --model roberta-base --epochs 3
+python train_base.py --model roberta-base --epochs 5
 
 # Обучение DistilBERT
-python en_training.py --model distilbert-base-uncased --epochs 3
+python train_base.py --model distilbert-base-uncased --epochs 6
 
-# С кастомными параметрами
-python en_training.py \
-    --model bert-base-uncased \
-    --epochs 5 \
-    --batch_size 32 \
-    --learning_rate 3e-5 \
-    --output_dir checkpoints/experiment1
+# Обучение ALBERT
+python train_base.py --model albert-base-v2 --epochs 6 --batch_size 64
 ```
-
-### Python API
-
-```python
-from en_training import train_model
-
-# Обучение модели
-results = train_model(
-    model_name="bert-base-uncased",
-    train_data=train_sentences,
-    val_data=val_sentences,
-    label2id=label2id,
-    config={
-        'epochs': 3,
-        'batch_size': 16,
-        'learning_rate': 2e-5
-    }
-)
-
-print(f"Best F1: {results['best_f1']:.4f}")
-```
-
----
-
-## Ожидаемые результаты
-
-### Baseline метрики
-
-На основе литературы и аналогичных экспериментов:
-
-| Модель | Accuracy (ожидаемо) | F1 (ожидаемо) |
-|--------|---------------------|---------------|
-| BERT-base | 94-96% | 88-92% |
-| RoBERTa-base | 95-97% | 89-93% |
-| DistilBERT | 93-95% | 86-90% |
-
-### Признаки успешного обучения
-
-1. Loss монотонно убывает на обучении
-2. Val loss не растёт (нет overfitting)
-3. Метрики растут от эпохи к эпохе
-4. Модель корректно предсказывает на примерах
 
 ---
 
 ## Зависимости
-
-### Python packages
 
 ```
 torch>=2.0.0
 transformers>=4.30.0
 datasets>=2.14.0
 scikit-learn>=1.3.0
-tensorboard>=2.14.0
 tqdm>=4.65.0
 numpy>=1.24.0
+flair>=0.15.1
 ```
 
-### Hardware
-
-- **Минимум**: GPU с 8GB VRAM (RTX 3070 / T4)
-- **Рекомендуется**: GPU с 16GB VRAM (RTX 4080 / A10)
-- **Альтернатива**: Google Colab / Kaggle (бесплатные GPU)
-
----
-
-## Чекпоинты выполнения
-
-- [ ] Реализован `TokenClassificationDataset`
-- [ ] Реализован `MorphologyTagger`
-- [ ] Реализован `Trainer` с training loop
-- [ ] Настроен логирование (console + TensorBoard + JSON)
-- [ ] Обучен BERT-base, зафиксированы метрики
-- [ ] Обучен RoBERTa-base, зафиксированы метрики
-- [ ] Обучен DistilBERT, зафиксированы метрики
-- [ ] Сохранены чекпоинты лучших моделей
-- [ ] Документированы гиперпараметры и результаты
-- [ ] Код воспроизводим (seed, requirements.txt)
+**Hardware**: GPU с CUDA (использован Google Colab / Kaggle)
 
 ---
 
@@ -654,11 +320,17 @@ numpy>=1.24.0
 
 ---
 
-## Риски и митигация
+## Чекпоинты ✅
 
-| Риск | Вероятность | Митигация |
-|------|-------------|-----------|
-| OOM на GPU | Средняя | Уменьшить batch_size, использовать gradient accumulation |
-| Overfitting | Средняя | Early stopping, dropout, weight decay |
-| Долгое обучение | Низкая | Использовать DistilBERT для быстрых экспериментов |
-| Низкие метрики | Низкая | Проверить данные, увеличить эпохи, тюнинг гиперпараметров |
+- [x] Реализован `TokenClassificationDataset` (PyTorch Dataset)
+- [x] Реализован `MorphologyTagger` (обёртка над трансформерами)
+- [x] Реализован `Trainer` с training loop и gradient accumulation
+- [x] Настроено логирование (console + JSON)
+- [x] Обучен BERT-base — Test F1: 56.79%, время: 38.6 мин
+- [x] Обучен RoBERTa-base — Test F1: 55.90%, время: 38.8 мин
+- [x] Обучен DistilBERT — Test F1: 58.84%, время: 25.9 мин
+- [x] Обучен ALBERT-base — Test F1: 56.09%, время: 49.0 мин
+- [x] Обучен Flair (BiLSTM+CRF) — Test Macro-F1: 52.08%, время: ~30 мин
+- [x] Сохранены чекпоинты лучших моделей
+- [x] Документированы гиперпараметры и результаты
+- [x] Код воспроизводим (seed=42, requirements.txt)

@@ -1,22 +1,20 @@
 import React from 'react';
+import { Clock, Sparkles } from 'lucide-react';
+import { motion } from 'motion/react';
 
 /**
- * AnalysisResult - Table displaying morphological analysis results
+ * AnalysisResult - Animated table displaying morphological analysis results
+ * Preserves the same API response format: { model_name, text, tokens, processing_time_ms }
  */
 export default function AnalysisResult({ result }) {
     if (!result) {
-        return (
-            <div className="empty-state">
-                <div className="empty-state-icon">📝</div>
-                <p>Введите текст и нажмите "Анализировать" для получения результатов</p>
-            </div>
-        );
+        return null;
     }
 
-    const { model_name, text, tokens, processing_time_ms } = result;
+    const { model_name, tokens, processing_time_ms } = result;
 
     /**
-     * Get CSS class for POS tag
+     * Get POS tag CSS class for colored pill badges
      */
     const getPosClass = (upos) => {
         const knownTags = ['NOUN', 'VERB', 'ADJ', 'ADV', 'DET', 'PRON', 'ADP', 'PUNCT', 'AUX', 'CCONJ', 'SCONJ'];
@@ -24,7 +22,7 @@ export default function AnalysisResult({ result }) {
     };
 
     /**
-     * Format features object as badges
+     * Render features as glass-style badges
      */
     const renderFeatures = (features) => {
         if (!features || Object.keys(features).length === 0) {
@@ -32,7 +30,7 @@ export default function AnalysisResult({ result }) {
         }
 
         return (
-            <div className="features">
+            <div className="features-list">
                 {Object.entries(features).map(([key, value]) => (
                     <span key={key} className="feature-badge">
                         {key}={value}
@@ -43,45 +41,61 @@ export default function AnalysisResult({ result }) {
     };
 
     return (
-        <div className="results-section">
-            <div className="results-header">
-                <h2>Результаты анализа</h2>
-                <div className="results-meta">
-                    <span className="model-badge">{model_name}</span>
-                    <span style={{ marginLeft: '1rem' }}>
-                        ⏱ {processing_time_ms.toFixed(1)} ms
-                    </span>
+        <div>
+            {/* Meta Information Badges */}
+            <div className="result-meta">
+                <div className="meta-badge meta-badge--time">
+                    <Clock className="meta-icon" />
+                    <span className="meta-label">Processing time:</span>
+                    <span className="meta-value">{processing_time_ms.toFixed(1)}ms</span>
+                </div>
+                <div className="meta-badge meta-badge--model">
+                    <Sparkles className="meta-icon" />
+                    <span className="meta-label">Model:</span>
+                    <span className="meta-value">{model_name}</span>
                 </div>
             </div>
 
-            <table className="results-table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Токен</th>
-                        <th>POS</th>
-                        <th>Признаки</th>
-                        <th>Полная метка</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tokens.map((token, idx) => (
-                        <tr key={idx}>
-                            <td style={{ color: 'var(--text-muted)' }}>{idx + 1}</td>
-                            <td style={{ fontWeight: 500 }}>{token.token}</td>
-                            <td>
-                                <span className={`pos-tag ${getPosClass(token.upos)}`}>
-                                    {token.upos}
-                                </span>
-                            </td>
-                            <td>{renderFeatures(token.features)}</td>
-                            <td style={{ fontFamily: 'monospace', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                                {token.label}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            {/* Results Table */}
+            <div className="results-card">
+                <div style={{ overflowX: 'auto' }}>
+                    <table className="results-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Token</th>
+                                <th>POS Tag</th>
+                                <th>Morphological Features</th>
+                                <th>Full Label</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {tokens.map((token, idx) => (
+                                <motion.tr
+                                    key={idx}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: idx * 0.05 }}
+                                >
+                                    <td style={{ color: 'var(--text-muted)' }}>{idx + 1}</td>
+                                    <td>
+                                        <span className="token-text">{token.token}</span>
+                                    </td>
+                                    <td>
+                                        <span className={`pos-pill ${getPosClass(token.upos)}`}>
+                                            {token.upos}
+                                        </span>
+                                    </td>
+                                    <td>{renderFeatures(token.features)}</td>
+                                    <td>
+                                        <span className="label-text">{token.label}</span>
+                                    </td>
+                                </motion.tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     );
 }
