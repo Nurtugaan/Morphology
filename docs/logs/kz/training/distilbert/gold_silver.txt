@@ -1,0 +1,182 @@
+Starting DistilBERT-multilingual training with config: gold_silver
+Random seed set to 42
+
+============================================================
+Training Configuration: distilbert (gold_silver)
+============================================================
+  model_name: distilbert-base-multilingual-cased
+  output_dir: services/models/kk/kk-distilbert-gold-silver
+  learning_rate: 3e-05
+  batch_size: 32
+  epochs: 6
+  max_length: 128
+  warmup_ratio: 0.1
+  weight_decay: 0.01
+  gradient_accumulation_steps: 2
+  max_grad_norm: 1.0
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_epsilon: 1e-08
+  dropout: 0.1
+  seed: 42
+  fp16: False
+  logging_steps: 100
+  save_strategy: epoch
+  evaluation_strategy: epoch
+  early_stopping_patience: 3
+  early_stopping_threshold: 0.001
+  device: cuda
+
+============================================================
+Loading Kazakh Data (gold_silver)
+============================================================
+
+============================================================
+  CONFIG: gold_silver
+============================================================
+  📂 Loading KTB train: /content/services/preprocessing/../datasets/kazakh/UD/kk_ktb-ud-train.conllu
+  📂 Loading KTB test: /content/services/preprocessing/../datasets/kazakh/UD/kk_ktb-ud-test.conllu
+  📂 Loading Silver (kdt-NLANU-ud.conllu): /content/services/preprocessing/../datasets/kazakh/UD/kdt-NLANU-ud.conllu
+     ⏳ This may take a moment (large file)...
+  ✅ Gold+Silver: 28335 train (942 gold + 27393 silver), 104 dev (gold), 31 test (gold)
+
+  📊 Unique labels: 586
+
+Loading tokenizer: distilbert-base-multilingual-cased...
+config.json: 100% 466/466 [00:00<00:00, 2.06MB/s]
+tokenizer_config.json: 100% 49.0/49.0 [00:00<00:00, 209kB/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+vocab.txt: 100% 996k/996k [00:00<00:00, 3.92MB/s]
+tokenizer.json: 100% 1.96M/1.96M [00:00<00:00, 2.20MB/s]
+
+Creating dataloaders...
+  Train batches: 886
+  Val batches: 4
+  Test batches: 1
+
+Creating model...
+model.safetensors: 100% 542M/542M [00:05<00:00, 92.4MB/s]
+Loading weights: 100% 100/100 [00:00<00:00, 1050.47it/s, Materializing param=transformer.layer.5.sa_layer_norm.weight]
+DistilBertModel LOAD REPORT from: distilbert-base-multilingual-cased
+Key                     | Status     |  | 
+------------------------+------------+--+-
+vocab_layer_norm.weight | UNEXPECTED |  | 
+vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_transform.bias    | UNEXPECTED |  | 
+vocab_transform.weight  | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+✓ Model created: distilbert-base-multilingual-cased
+  Trainable parameters: 135,184,714
+  Number of labels: 586
+  Device: cuda
+Trainer initialized:
+  Device: cuda
+  Total steps: 2658
+  Warmup steps: 265
+  Output dir: services/models/kk/kk-distilbert-gold-silver
+
+============================================================
+Starting Training
+============================================================
+Epoch 1/6: 100% 886/886 [04:54<00:00,  3.01it/s, loss=2.0560, lr=2.78e-05]
+                                             
+Epoch 1/6 completed in 295.2s
+  Train Loss: 2.0560
+  Val Loss:   3.1251
+  Accuracy:   0.4813
+  Precision:  0.1914
+  Recall:     0.2174
+  F1:         0.1948
+Writing model shards: 100% 1/1 [00:11<00:00, 11.78s/it]
+✓ Model saved to services/models/kk/kk-distilbert-gold-silver/best_model
+  ✓ New best model saved! F1: 0.1948
+Writing model shards: 100% 1/1 [00:04<00:00,  4.14s/it]
+✓ Model saved to services/models/kk/kk-distilbert-gold-silver/last_checkpoint
+Epoch 2/6: 100% 886/886 [05:01<00:00,  2.94it/s, loss=0.4060, lr=2.22e-05]
+                                             
+Epoch 2/6 completed in 302.2s
+  Train Loss: 0.4060
+  Val Loss:   2.8946
+  Accuracy:   0.4970
+  Precision:  0.2444
+  Recall:     0.2564
+  F1:         0.2386
+Writing model shards: 100% 1/1 [00:07<00:00,  7.07s/it]
+✓ Model saved to services/models/kk/kk-distilbert-gold-silver/best_model
+  ✓ New best model saved! F1: 0.2386
+Writing model shards: 100% 1/1 [00:02<00:00,  2.17s/it]
+✓ Model saved to services/models/kk/kk-distilbert-gold-silver/last_checkpoint
+Epoch 3/6: 100% 886/886 [05:01<00:00,  2.94it/s, loss=0.2703, lr=1.67e-05]
+                                             
+Epoch 3/6 completed in 302.1s
+  Train Loss: 0.2703
+  Val Loss:   2.6710
+  Accuracy:   0.5108
+  Precision:  0.2499
+  Recall:     0.2649
+  F1:         0.2443
+Writing model shards: 100% 1/1 [00:07<00:00,  7.55s/it]
+✓ Model saved to services/models/kk/kk-distilbert-gold-silver/best_model
+  ✓ New best model saved! F1: 0.2443
+Writing model shards: 100% 1/1 [00:02<00:00,  2.26s/it]
+✓ Model saved to services/models/kk/kk-distilbert-gold-silver/last_checkpoint
+Epoch 4/6: 100% 886/886 [05:01<00:00,  2.94it/s, loss=0.2078, lr=1.11e-05]
+                                             
+Epoch 4/6 completed in 302.1s
+  Train Loss: 0.2078
+  Val Loss:   2.5726
+  Accuracy:   0.5108
+  Precision:  0.2519
+  Recall:     0.2623
+  F1:         0.2437
+  Early stopping counter: 1/3
+Writing model shards: 100% 1/1 [00:14<00:00, 14.26s/it]
+✓ Model saved to services/models/kk/kk-distilbert-gold-silver/last_checkpoint
+Epoch 5/6: 100% 886/886 [05:01<00:00,  2.94it/s, loss=0.1743, lr=5.55e-06]
+                                             
+Epoch 5/6 completed in 302.0s
+  Train Loss: 0.1743
+  Val Loss:   2.5135
+  Accuracy:   0.5197
+  Precision:  0.2557
+  Recall:     0.2559
+  F1:         0.2385
+  Early stopping counter: 2/3
+Writing model shards: 100% 1/1 [01:04<00:00, 64.40s/it]
+✓ Model saved to services/models/kk/kk-distilbert-gold-silver/last_checkpoint
+Epoch 6/6: 100% 886/886 [05:01<00:00,  2.94it/s, loss=0.1549, lr=0.00e+00]
+                                             
+Epoch 6/6 completed in 302.1s
+  Train Loss: 0.1549
+  Val Loss:   2.5801
+  Accuracy:   0.5187
+  Precision:  0.2522
+  Recall:     0.2588
+  F1:         0.2400
+  Early stopping counter: 3/3
+Writing model shards: 100% 1/1 [00:07<00:00,  7.51s/it]
+✓ Model saved to services/models/kk/kk-distilbert-gold-silver/last_checkpoint
+
+Early stopping triggered after 6 epochs
+Training history saved to services/models/kk/kk-distilbert-gold-silver/training_history.json
+
+============================================================
+Training Completed!
+============================================================
+Total time: 34.6 minutes
+Best F1: 0.2443 (Epoch 3)
+Model saved to: services/models/kk/kk-distilbert-gold-silver
+
+Evaluating on test set...
+
+Evaluating on test set...
+Testing: 100% 1/1 [00:00<00:00,  3.58it/s]
+
+Test Results:
+  Accuracy:  0.5047
+  Precision: 0.2094
+  Recall:    0.2288
+  F1:        0.2065

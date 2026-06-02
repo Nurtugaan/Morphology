@@ -1,0 +1,179 @@
+Starting DistilBERT-multilingual training with config: nlanu_only
+Random seed set to 42
+
+============================================================
+Training Configuration: distilbert (nlanu_only)
+============================================================
+  model_name: distilbert-base-multilingual-cased
+  output_dir: services/models/kk/kk-distilbert-nlanu
+  learning_rate: 3e-05
+  batch_size: 32
+  epochs: 6
+  max_length: 128
+  warmup_ratio: 0.1
+  weight_decay: 0.01
+  gradient_accumulation_steps: 2
+  max_grad_norm: 1.0
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_epsilon: 1e-08
+  dropout: 0.1
+  seed: 42
+  fp16: False
+  logging_steps: 100
+  save_strategy: epoch
+  evaluation_strategy: epoch
+  early_stopping_patience: 3
+  early_stopping_threshold: 0.001
+  device: cuda
+
+============================================================
+Loading Kazakh Data (nlanu_only)
+============================================================
+
+============================================================
+  CONFIG: nlanu_only
+============================================================
+  📂 Loading NLANU: /content/services/preprocessing/../datasets/kazakh/NLANU/kdt-NLANU-0.01.connlu
+     ⏳ This may take a while (large file ~65MB)...
+  ✅ NLANU: 48888 train, 6111 dev, 6112 test sentences
+
+  📊 Unique labels: 570
+
+Loading tokenizer: distilbert-base-multilingual-cased...
+
+Creating dataloaders...
+  Train batches: 1528
+  Val batches: 191
+  Test batches: 191
+
+Creating model...
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100% 100/100 [00:00<00:00, 725.11it/s, Materializing param=transformer.layer.5.sa_layer_norm.weight]
+DistilBertModel LOAD REPORT from: distilbert-base-multilingual-cased
+Key                     | Status     |  | 
+------------------------+------------+--+-
+vocab_layer_norm.weight | UNEXPECTED |  | 
+vocab_transform.bias    | UNEXPECTED |  | 
+vocab_transform.weight  | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_projector.bias    | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+✓ Model created: distilbert-base-multilingual-cased
+  Trainable parameters: 135,172,410
+  Number of labels: 570
+  Device: cuda
+Trainer initialized:
+  Device: cuda
+  Total steps: 4584
+  Warmup steps: 458
+  Output dir: services/models/kk/kk-distilbert-nlanu
+
+============================================================
+Starting Training
+============================================================
+Epoch 1/6: 100% 1528/1528 [08:33<00:00,  2.98it/s, loss=1.6873, lr=2.78e-05]
+
+Epoch 1/6 completed in 547.0s
+  Train Loss: 1.6873
+  Val Loss:   0.3452
+  Accuracy:   0.9124
+  Precision:  0.3667
+  Recall:     0.3394
+  F1:         0.3398
+Writing model shards: 100% 1/1 [00:03<00:00,  3.84s/it]
+✓ Model saved to services/models/kk/kk-distilbert-nlanu/best_model
+  ✓ New best model saved! F1: 0.3398
+Writing model shards: 100% 1/1 [00:02<00:00,  2.64s/it]
+✓ Model saved to services/models/kk/kk-distilbert-nlanu/last_checkpoint
+Epoch 2/6: 100% 1528/1528 [08:37<00:00,  2.95it/s, loss=0.2916, lr=2.22e-05]
+
+Epoch 2/6 completed in 551.2s
+  Train Loss: 0.2916
+  Val Loss:   0.2118
+  Accuracy:   0.9433
+  Precision:  0.4845
+  Recall:     0.4811
+  F1:         0.4715
+Writing model shards: 100% 1/1 [00:04<00:00,  4.12s/it]
+✓ Model saved to services/models/kk/kk-distilbert-nlanu/best_model
+  ✓ New best model saved! F1: 0.4715
+Writing model shards: 100% 1/1 [00:08<00:00,  8.58s/it]
+✓ Model saved to services/models/kk/kk-distilbert-nlanu/last_checkpoint
+Epoch 3/6: 100% 1528/1528 [08:37<00:00,  2.95it/s, loss=0.1935, lr=1.67e-05]
+
+Epoch 3/6 completed in 551.0s
+  Train Loss: 0.1935
+  Val Loss:   0.1623
+  Accuracy:   0.9554
+  Precision:  0.5625
+  Recall:     0.5472
+  F1:         0.5430
+Writing model shards: 100% 1/1 [00:12<00:00, 12.01s/it]
+✓ Model saved to services/models/kk/kk-distilbert-nlanu/best_model
+  ✓ New best model saved! F1: 0.5430
+Writing model shards: 100% 1/1 [00:10<00:00, 10.08s/it]
+✓ Model saved to services/models/kk/kk-distilbert-nlanu/last_checkpoint
+Epoch 4/6: 100% 1528/1528 [08:37<00:00,  2.95it/s, loss=0.1491, lr=1.11e-05]
+
+Epoch 4/6 completed in 551.7s
+  Train Loss: 0.1491
+  Val Loss:   0.1375
+  Accuracy:   0.9624
+  Precision:  0.6003
+  Recall:     0.5871
+  F1:         0.5835
+Writing model shards: 100% 1/1 [00:04<00:00,  4.13s/it]
+✓ Model saved to services/models/kk/kk-distilbert-nlanu/best_model
+  ✓ New best model saved! F1: 0.5835
+Writing model shards: 100% 1/1 [00:11<00:00, 11.91s/it]
+✓ Model saved to services/models/kk/kk-distilbert-nlanu/last_checkpoint
+Epoch 5/6: 100% 1528/1528 [08:37<00:00,  2.95it/s, loss=0.1238, lr=5.56e-06]
+
+Epoch 5/6 completed in 551.1s
+  Train Loss: 0.1238
+  Val Loss:   0.1237
+  Accuracy:   0.9660
+  Precision:  0.6292
+  Recall:     0.6225
+  F1:         0.6161
+Writing model shards: 100% 1/1 [00:06<00:00,  6.58s/it]
+✓ Model saved to services/models/kk/kk-distilbert-nlanu/best_model
+  ✓ New best model saved! F1: 0.6161
+Writing model shards: 100% 1/1 [00:02<00:00,  2.28s/it]
+✓ Model saved to services/models/kk/kk-distilbert-nlanu/last_checkpoint
+Epoch 6/6: 100% 1528/1528 [08:37<00:00,  2.95it/s, loss=0.1087, lr=0.00e+00]
+
+Epoch 6/6 completed in 550.9s
+  Train Loss: 0.1087
+  Val Loss:   0.1196
+  Accuracy:   0.9671
+  Precision:  0.6303
+  Recall:     0.6271
+  F1:         0.6190
+Writing model shards: 100% 1/1 [00:05<00:00,  5.04s/it]
+✓ Model saved to services/models/kk/kk-distilbert-nlanu/best_model
+  ✓ New best model saved! F1: 0.6190
+Writing model shards: 100% 1/1 [00:05<00:00,  5.13s/it]
+✓ Model saved to services/models/kk/kk-distilbert-nlanu/last_checkpoint
+Training history saved to services/models/kk/kk-distilbert-nlanu/training_history.json
+
+============================================================
+Training Completed!
+============================================================
+Total time: 58.0 minutes
+Best F1: 0.6190 (Epoch 6)
+Model saved to: services/models/kk/kk-distilbert-nlanu
+
+Evaluating on test set...
+
+Evaluating on test set...
+Testing: 100% 191/191 [00:33<00:00,  5.64it/s]
+
+Test Results:
+  Accuracy:  0.9696
+  Precision: 0.6571
+  Recall:    0.6534
+  F1:        0.6470

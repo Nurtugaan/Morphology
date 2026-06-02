@@ -1,0 +1,256 @@
+================================================================================
+KAZAKH MORPHOLOGICAL DATA PREPROCESSING PIPELINE - DEMO (TASK-008)
+================================================================================
+
+================================================================================
+CONFIG 1: GOLD ONLY (UD Kazakh KTB)
+================================================================================
+
+============================================================
+  CONFIG: gold_only
+============================================================
+  📂 Loading KTB train: C:\Diploma\morphology\services\preprocessing\..\datasets\kazakh\UD\kk_ktb-ud-train.conllu      
+  📂 Loading KTB test: C:\Diploma\morphology\services\preprocessing\..\datasets\kazakh\UD\kk_ktb-ud-test.conllu
+  ✅ KTB Gold: 942 train, 104 dev, 31 test sentences
+
+  📊 Unique labels: 420
+
+  📊 Dataset: KTB-Gold
+  Split         Sentences       Tokens
+  ------------------------------------
+  Train               942        8,986
+  Dev                 104        1,014
+  Test                 31          529
+  ------------------------------------
+  Total             1,077       10,529
+
+  📝 Sample from train:
+     Sentence ID: Иран.tagged.txt:89:2598
+     Text: Экономиканың басқа салалары да дамыған, бірақ сыртқы экономикалық байланыстардың нашарлығынан және қаржы жетіспеушілігінен толық қуатымен жұмыс істей алмауда.
+
+  Token                Lemma                UPOS     FEATS                               Label
+  ----------------------------------------------------------------------------------------------------
+  Экономиканың         экономика            NOUN     Case=Gen                            NOUN|Case=Gen
+  басқа                басқа                ADJ      _                                   ADJ|_
+  салалары             сала                 NOUN     Case=Nom|Number=Plur|Number[psor... NOUN|Case=Nom|Number=Plur|Number[psor]=Plur,Sing|Person[psor]=3
+  да                   да                   ADV      _                                   ADV|_
+  дамыған              дамы                 VERB     Mood=Ind|Number=Plur|Person=3|Te... VERB|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin
+  ,                    ,                    PUNCT    _                                   PUNCT|_
+  бірақ                бірақ                CCONJ    _                                   CCONJ|_
+  сыртқы               сыртқы               ADJ      _                                   ADJ|_
+  ... and 12 more tokens
+
+  📊 Label Statistics:
+     Total tokens: 8,986
+     Unique labels: 420
+     Unique UPOS tags: 17
+
+  🏷️  UPOS distribution:
+     NOUN    :    2,667 (29.7%)
+     PUNCT   :    1,774 (19.7%)
+     VERB    :    1,420 (15.8%)
+     ADJ     :      696 (7.7%)
+     PROPN   :      454 (5.1%)
+     PRON    :      432 (4.8%)
+     NUM     :      314 (3.5%)
+     AUX     :      304 (3.4%)
+     ADV     :      268 (3.0%)
+     DET     :      192 (2.1%)
+     CCONJ   :      158 (1.8%)
+     ADP     :      149 (1.7%)
+     X       :       93 (1.0%)
+     PART    :       26 (0.3%)
+     INTJ    :       20 (0.2%)
+     SCONJ   :       16 (0.2%)
+     SYM     :        3 (0.0%)
+
+  🏷️  Top 10 labels:
+     PUNCT|_                                      :  1,774
+     NOUN|Case=Nom                                :    832
+     ADJ|_                                        :    650
+     NOUN|Case=Nom|Number[psor]=Plur,Sing|Person[psor]=3:    346
+     ADV|_                                        :    225
+     PROPN|Case=Nom                               :    215
+     VERB|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin:    209
+     CCONJ|_                                      :    158
+     VERB|Aspect=Perf|VerbForm=Conv               :    151
+     ADP|_                                        :    147
+
+  ✅ Validation:
+     train: all 942 sentences OK (tokens == labels)
+     dev: all 104 sentences OK (tokens == labels)
+     test: all 31 sentences OK (tokens == labels)
+
+================================================================================
+CONFIG 2: GOLD + SILVER (KTB + KazDET→UD)
+================================================================================
+
+============================================================
+  CONFIG: gold_silver
+============================================================
+  📂 Loading KTB train: C:\Diploma\morphology\services\preprocessing\..\datasets\kazakh\UD\kk_ktb-ud-train.conllu      
+  📂 Loading KTB test: C:\Diploma\morphology\services\preprocessing\..\datasets\kazakh\UD\kk_ktb-ud-test.conllu
+  📂 Loading Silver (kdt-NLANU-ud.conllu): C:\Diploma\morphology\services\preprocessing\..\datasets\kazakh\UD\kdt-NLANU-ud.conllu
+     ⏳ This may take a moment (large file)...
+  ✅ Gold+Silver: 28335 train (942 gold + 27393 silver), 104 dev (gold), 31 test (gold)
+
+  📊 Unique labels: 586
+
+  📊 Dataset: KTB+Silver
+  Split         Sentences       Tokens
+  ------------------------------------
+  Train            28,335      296,069
+  Dev                 104        1,014
+  Test                 31          529
+  ------------------------------------
+  Total            28,470      297,612
+
+  📝 Sample from train:
+     Sentence ID: Иран.tagged.txt:89:2598
+     Text: Экономиканың басқа салалары да дамыған, бірақ сыртқы экономикалық байланыстардың нашарлығынан және қаржы жетіспеушілігінен толық қуатымен жұмыс істей алмауда.
+
+  Token                Lemma                UPOS     FEATS                               Label
+  ----------------------------------------------------------------------------------------------------
+  Экономиканың         экономика            NOUN     Case=Gen                            NOUN|Case=Gen
+  басқа                басқа                ADJ      _                                   ADJ|_
+  салалары             сала                 NOUN     Case=Nom|Number=Plur|Number[psor... NOUN|Case=Nom|Number=Plur|Number[psor]=Plur,Sing|Person[psor]=3
+  да                   да                   ADV      _                                   ADV|_
+  дамыған              дамы                 VERB     Mood=Ind|Number=Plur|Person=3|Te... VERB|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin
+  ,                    ,                    PUNCT    _                                   PUNCT|_
+  бірақ                бірақ                CCONJ    _                                   CCONJ|_
+  сыртқы               сыртқы               ADJ      _                                   ADJ|_
+  ... and 12 more tokens
+
+  📊 Label Statistics:
+     Total tokens: 296,069
+     Unique labels: 586
+     Unique UPOS tags: 17
+
+  🏷️  UPOS distribution:
+     NOUN    :   91,303 (30.8%)
+     PUNCT   :   53,745 (18.2%)
+     VERB    :   36,578 (12.4%)
+     PROPN   :   30,813 (10.4%)
+     ADJ     :   30,693 (10.4%)
+     PRON    :   13,994 (4.7%)
+     ADP     :   10,721 (3.6%)
+     NUM     :    9,379 (3.2%)
+     ADV     :    6,522 (2.2%)
+     CCONJ   :    5,654 (1.9%)
+     AUX     :    3,714 (1.3%)
+     PART    :      795 (0.3%)
+     SCONJ   :      787 (0.3%)
+     INTJ    :      691 (0.2%)
+     DET     :      350 (0.1%)
+     SYM     :      220 (0.1%)
+     X       :      110 (0.0%)
+
+  🏷️  Top 10 labels:
+     PUNCT|_                                      : 53,745
+     NOUN|_                                       : 31,245
+     ADJ|_                                        : 29,919
+     PROPN|_                                      : 21,699
+     NOUN|Number[psor]=Plur,Sing|Person[psor]=3   : 13,065
+     ADP|_                                        : 10,719
+     NUM|_                                        :  8,557
+     PRON|_                                       :  8,385
+     VERB|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin:  7,530
+     ADV|_                                        :  6,354
+
+  ✅ Validation:
+     train: all 28335 sentences OK
+     dev: all 104 sentences OK
+     test: all 31 sentences OK
+
+================================================================================
+CONFIG 3: NLANU ONLY (KazDET original)
+================================================================================
+
+============================================================
+  CONFIG: nlanu_only
+============================================================
+  📂 Loading NLANU: C:\Diploma\morphology\services\preprocessing\..\datasets\kazakh\NLANU\kdt-NLANU-0.01.connlu        
+     ⏳ This may take a while (large file ~65MB)...
+  ✅ NLANU: 48888 train, 6111 dev, 6112 test sentences
+
+  📊 Unique labels: 570
+
+  📊 Dataset: NLANU
+  Split         Sentences       Tokens
+  ------------------------------------
+  Train            48,888      747,673
+  Dev               6,111       92,496
+  Test              6,112       94,562
+  ------------------------------------
+  Total            61,111      934,731
+
+  📝 Sample from train:
+     Sentence ID:
+     Text: — Үшкелге қайтқалы тұр едім,— дедім.
+
+  Token                Lemma                UPOS     FEATS                               Label
+  ----------------------------------------------------------------------------------------------------
+  —                    —                    PUNCT    _                                   PUNCT|_
+  Үшкелге              Үшкел                PROPN    Case=Dat                            PROPN|Case=Dat
+  қайтқалы             қайт                 VERB     _                                   VERB|_
+  тұр                  тұр                  AUX      _                                   AUX|_
+  едім                 е                    AUX      _                                   AUX|_
+  ,                    ,                    PUNCT    _                                   PUNCT|_
+  —                    —                    PUNCT    _                                   PUNCT|_
+  дедім                де                   VERB     _                                   VERB|_
+  ... and 1 more tokens
+
+  📊 Label Statistics:
+     Total tokens: 747,673
+     Unique labels: 570
+     Unique UPOS tags: 17
+
+  🏷️  UPOS distribution:
+     NOUN    :  219,099 (29.3%)
+     VERB    :  131,763 (17.6%)
+     PUNCT   :  129,379 (17.3%)
+     ADJ     :   68,767 (9.2%)
+     PROPN   :   60,860 (8.1%)
+     PRON    :   31,929 (4.3%)
+     ADP     :   26,169 (3.5%)
+     AUX     :   23,784 (3.2%)
+     NUM     :   18,166 (2.4%)
+     ADV     :   17,222 (2.3%)
+     CONJ    :   14,833 (2.0%)
+     SCONJ   :    1,936 (0.3%)
+     PART    :    1,371 (0.2%)
+     INTJ    :    1,257 (0.2%)
+     DET     :      541 (0.1%)
+     SYM     :      524 (0.1%)
+     X       :       73 (0.0%)
+
+  🏷️  Top 10 labels:
+     PUNCT|_                                      : 129,379
+     NOUN|_                                       : 74,200
+     ADJ|_                                        : 67,418
+     PROPN|_                                      : 43,369
+     NOUN|Poss=3                                  : 26,326
+     ADP|_                                        : 26,169
+     VERB|vbType=Adv                              : 21,493
+     PRON|_                                       : 19,052
+     NUM|_                                        : 17,299
+     ADV|_                                        : 16,869
+
+  ✅ Validation:
+     train: all 48888 sentences OK
+     dev: all 6111 sentences OK
+     test: all 6112 sentences OK
+
+================================================================================
+SUMMARY
+================================================================================
+
+  Config                    Train        Dev       Test     Labels
+  --------------------------------------------------------------
+  Gold Only                   942        104         31        420
+  Gold+Silver              28,335        104         31        586
+  NLANU Only               48,888      6,111      6,112        570
+
+================================================================================
+DEMO COMPLETE
+================================================================================

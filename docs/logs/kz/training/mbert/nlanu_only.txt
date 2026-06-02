@@ -1,0 +1,186 @@
+Starting mBERT training with config: nlanu_only
+Random seed set to 42
+
+============================================================
+Training Configuration: mbert (nlanu_only)
+============================================================
+  model_name: bert-base-multilingual-cased
+  output_dir: services/models/kk/kk-mbert-nlanu
+  learning_rate: 3e-05
+  batch_size: 32
+  epochs: 6
+  max_length: 128
+  warmup_ratio: 0.1
+  weight_decay: 0.01
+  gradient_accumulation_steps: 2
+  max_grad_norm: 1.0
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_epsilon: 1e-08
+  dropout: 0.1
+  seed: 42
+  fp16: False
+  logging_steps: 100
+  save_strategy: epoch
+  evaluation_strategy: epoch
+  early_stopping_patience: 3
+  early_stopping_threshold: 0.001
+  device: cuda
+
+============================================================
+Loading Kazakh Data (nlanu_only)
+============================================================
+
+============================================================
+  CONFIG: nlanu_only
+============================================================
+  📂 Loading NLANU: /content/services/preprocessing/../datasets/kazakh/NLANU/kdt-NLANU-0.01.connlu
+     ⏳ This may take a while (large file ~65MB)...
+  ✅ NLANU: 48888 train, 6111 dev, 6112 test sentences
+
+  📊 Unique labels: 570
+
+Loading tokenizer: bert-base-multilingual-cased...
+config.json: 100% 625/625 [00:00<00:00, 1.70MB/s]
+tokenizer_config.json: 100% 49.0/49.0 [00:00<00:00, 247kB/s]
+vocab.txt: 996kB [00:00, 1.37MB/s]
+tokenizer.json: 1.96MB [00:00, 2.27MB/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Creating dataloaders...
+  Train batches: 1528
+  Val batches: 191
+  Test batches: 191
+
+Creating model...
+model.safetensors: 100% 714M/714M [00:13<00:00, 52.3MB/s]
+Loading weights: 100% 199/199 [00:00<00:00, 981.62it/s, Materializing param=pooler.dense.weight] 
+BertModel LOAD REPORT from: bert-base-multilingual-cased
+Key                                        | Status     |  | 
+-------------------------------------------+------------+--+-
+cls.predictions.bias                       | UNEXPECTED |  | 
+cls.seq_relationship.bias                  | UNEXPECTED |  | 
+cls.predictions.transform.LayerNorm.bias   | UNEXPECTED |  | 
+cls.predictions.transform.LayerNorm.weight | UNEXPECTED |  | 
+cls.predictions.transform.dense.bias       | UNEXPECTED |  | 
+cls.seq_relationship.weight                | UNEXPECTED |  | 
+cls.predictions.transform.dense.weight     | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+✓ Model created: bert-base-multilingual-cased
+  Trainable parameters: 178,291,770
+  Number of labels: 570
+  Device: cuda
+Trainer initialized:
+  Device: cuda
+  Total steps: 4584
+  Warmup steps: 458
+  Output dir: services/models/kk/kk-mbert-nlanu
+
+============================================================
+Starting Training
+============================================================
+Epoch 1/6: 100% 1528/1528 [16:18<00:00,  1.56it/s, loss=1.4193, lr=2.78e-05]
+
+Epoch 1/6 completed in 1031.6s
+  Train Loss: 1.4193
+  Val Loss:   0.2777
+  Accuracy:   0.9296
+  Precision:  0.4096
+  Recall:     0.3992
+  F1:         0.3933
+Writing model shards: 100% 1/1 [00:08<00:00,  8.22s/it]
+✓ Model saved to services/models/kk/kk-mbert-nlanu/best_model
+  ✓ New best model saved! F1: 0.3933
+Writing model shards: 100% 1/1 [00:07<00:00,  7.19s/it]
+✓ Model saved to services/models/kk/kk-mbert-nlanu/last_checkpoint
+Epoch 2/6: 100% 1528/1528 [16:24<00:00,  1.55it/s, loss=0.2314, lr=2.22e-05]
+
+Epoch 2/6 completed in 1036.8s
+  Train Loss: 0.2314
+  Val Loss:   0.1738
+  Accuracy:   0.9539
+  Precision:  0.5515
+  Recall:     0.5546
+  F1:         0.5391
+Writing model shards: 100% 1/1 [00:06<00:00,  6.80s/it]
+✓ Model saved to services/models/kk/kk-mbert-nlanu/best_model
+  ✓ New best model saved! F1: 0.5391
+Writing model shards: 100% 1/1 [00:05<00:00,  5.27s/it]
+✓ Model saved to services/models/kk/kk-mbert-nlanu/last_checkpoint
+Epoch 3/6: 100% 1528/1528 [16:24<00:00,  1.55it/s, loss=0.1507, lr=1.67e-05]
+                                                 
+Epoch 3/6 completed in 1036.7s
+  Train Loss: 0.1507
+  Val Loss:   0.1311
+  Accuracy:   0.9633
+  Precision:  0.6267
+  Recall:     0.6228
+  F1:         0.6128
+Writing model shards: 100% 1/1 [00:08<00:00,  8.11s/it]
+✓ Model saved to services/models/kk/kk-mbert-nlanu/best_model
+  ✓ New best model saved! F1: 0.6128
+Writing model shards: 100% 1/1 [00:06<00:00,  6.15s/it]
+✓ Model saved to services/models/kk/kk-mbert-nlanu/last_checkpoint
+Epoch 4/6: 100% 1528/1528 [16:24<00:00,  1.55it/s, loss=0.1111, lr=1.11e-05]
+
+Epoch 4/6 completed in 1037.7s
+  Train Loss: 0.1111
+  Val Loss:   0.1099
+  Accuracy:   0.9702
+  Precision:  0.6695
+  Recall:     0.6747
+  F1:         0.6629
+Writing model shards: 100% 1/1 [00:29<00:00, 29.20s/it]
+✓ Model saved to services/models/kk/kk-mbert-nlanu/best_model
+  ✓ New best model saved! F1: 0.6629
+Writing model shards: 100% 1/1 [00:03<00:00,  3.28s/it]
+✓ Model saved to services/models/kk/kk-mbert-nlanu/last_checkpoint
+Epoch 5/6: 100% 1528/1528 [16:25<00:00,  1.55it/s, loss=0.0866, lr=5.56e-06]
+
+Epoch 5/6 completed in 1038.1s
+  Train Loss: 0.0866
+  Val Loss:   0.0950
+  Accuracy:   0.9745
+  Precision:  0.6859
+  Recall:     0.7000
+  F1:         0.6845
+Writing model shards: 100% 1/1 [00:11<00:00, 11.45s/it]
+✓ Model saved to services/models/kk/kk-mbert-nlanu/best_model
+  ✓ New best model saved! F1: 0.6845
+Writing model shards: 100% 1/1 [00:03<00:00,  3.41s/it]
+✓ Model saved to services/models/kk/kk-mbert-nlanu/last_checkpoint
+Epoch 6/6: 100% 1528/1528 [16:25<00:00,  1.55it/s, loss=0.0717, lr=0.00e+00]
+
+Epoch 6/6 completed in 1038.5s
+  Train Loss: 0.0717
+  Val Loss:   0.0900
+  Accuracy:   0.9761
+  Precision:  0.6972
+  Recall:     0.7104
+  F1:         0.6961
+Writing model shards: 100% 1/1 [00:10<00:00, 10.71s/it]
+✓ Model saved to services/models/kk/kk-mbert-nlanu/best_model
+  ✓ New best model saved! F1: 0.6961
+Writing model shards: 100% 1/1 [00:13<00:00, 13.06s/it]
+✓ Model saved to services/models/kk/kk-mbert-nlanu/last_checkpoint
+Training history saved to services/models/kk/kk-mbert-nlanu/training_history.json
+
+============================================================
+Training Completed!
+============================================================
+Total time: 109.8 minutes
+Best F1: 0.6961 (Epoch 6)
+Model saved to: services/models/kk/kk-mbert-nlanu
+
+Evaluating on test set...
+
+Evaluating on test set...
+Testing: 100% 191/191 [00:50<00:00,  3.80it/s]
+
+Test Results:
+  Accuracy:  0.9773
+  Precision: 0.7288
+  Recall:    0.7375
+  F1:        0.7259

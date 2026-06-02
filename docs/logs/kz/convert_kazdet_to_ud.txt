@@ -1,0 +1,124 @@
+services/preprocessing/convert_kazdet_to_ud.py
+📖 Чтение файла: C:\Diploma\morphology\services\datasets\kazakh\NLANU\kdt-NLANU-0.01.connlu        
+   Всего строк: 1,056,953
+
+📝 Запись результата: C:\Diploma\morphology\services\datasets\kazakh\NLANU\kdt-NLANU-ud.conllu     
+📋 Лог изменений: C:\Diploma\morphology\services\datasets\kazakh\NLANU\conversion_changes.csv      
+🔍 Множественные залоги: C:\Diploma\morphology\services\datasets\kazakh\NLANU\multi_voice_review.csv
+🗑️  Удалённые предложения: C:\Di
+ploma\morphology\services\datasets\kazakh\NLANU\dropped_sentences.csv
+
+======================================================================
+📊 СТАТИСТИКА КОНВЕРТАЦИИ        
+======================================================================
+  Предложений:              61,111
+  Удалено предложений:      33,718 (55.2%)
+  Осталось предложений:     27,393
+  Токенов:                 934,731
+  Изменённых FEATS:        309,781 (33.1%)
+
+--- UPOS изменения ---
+  Всего изменено: 18,452 (2.0%)  
+    CONJ → CCONJ: 18,452
+
+--- XPOS изменения ---
+  Всего изменено: 934,731 (100.0%)
+    NOUN → n: 273,875
+    VERB → v: 164,975
+    ADJ → adj: 86,082
+    PROPN → np: 76,161
+    PUNCT → sent: 67,555
+    PUNCT → cm: 57,464
+    PRON → prn: 39,767
+    ADP → post: 32,719
+    AUX → vaux: 26,709
+    NUM → num: 22,662
+    ADV → adv: 21,450
+    CONJ → cnjcoo: 18,452        
+    PUNCT → guio: 16,713
+    PUNCT → rquot: 8,477
+    PUNCT → lquot: 8,257
+    AUX → cop: 2,980
+    SCONJ → cnjsub: 2,408        
+    PART → mod: 1,688
+    INTJ → ij: 1,576
+    PUNCT → quot: 1,266
+
+--- DEPREL изменения ---
+  Всего изменено: 229,768 (24.6%)    nmod-poss → nmod:poss: 85,360    dobj → obj: 56,530
+    acl-relcl → acl:relcl: 21,059    advmod-adp → advmod: 16,415  
+    name → flat:name: 13,822     
+    amod-nmod → amod: 11,442     
+    nmod-tmod → obl:tmod: 8,501  
+    acl-poss → acl: 5,687        
+    compound-etq → compound: 3,550
+    mwe → fixed: 1,998
+    qst → discourse: 1,688       
+    remnant → orphan: 1,175      
+    nmod-num → nmod: 632
+    compound-lvc → compound:lvc: 
+582
+    nmod-measure → nmod: 501     
+    neg → advmod: 451
+    compound-nn → compound: 273  
+    foreign → flat:foreign: 102  
+
+--- FEATS ключи: ДО → ПОСЛЕ ---  
+    Aspect
+     0  →    50,725 ✅ НОВЫЙ      
+    Case                        179,062  →   179,062
+    Mood
+     0  →    58,196 ✅ НОВЫЙ      
+    Number
+46,677  →   104,993 Δ+58,316     
+    Number[psor]
+     0  →   121,920 ✅ НОВЫЙ      
+    Person
+58,318  →    58,318
+    Person[psor]
+     0  →   121,920 ✅ НОВЫЙ      
+    Polarity
+     0  →     5,875 ✅ НОВЫЙ      
+    Polite
+     0  →       331 ✅ НОВЫЙ      
+    Poss                        121,920  →         0 ❌ УДАЛЁН     
+    Tense
+     0  →    73,540 ✅ НОВЫЙ      
+    VerbForm
+     0  →   166,259 ✅ НОВЫЙ      
+    Voice
+     0  →    30,263 ✅ НОВЫЙ      
+    vbMood
+ 2,997  →         0 ❌ УДАЛЁН     
+    vbNeg
+ 5,846  →         0 ❌ УДАЛЁН     
+    vbTense
+55,199  →         0 ❌ УДАЛЁН     
+    vbType                      111,064  →         0 ❌ УДАЛЁН     
+    vbVcCaus
+15,233  →         0 ❌ УДАЛЁН     
+    vbVcCoop
+   302  →         0 ❌ УДАЛЁН     
+    vbVcPass
+17,143  →         0 ❌ УДАЛЁН     
+    vbVcRefx
+    67  →         0 ❌ УДАЛЁН     
+
+--- Причины удаления предложений 
+---
+    3+_verbs_in_sentence: 32,955 
+    AUX+vbType=Adv: 1,785        
+    multi_voice=Pass|Caus: 1,653 
+    multi_voice=Caus|Pass: 737   
+    multi_voice=Pass|Rfl: 41     
+    multi_voice=Rcp|Caus: 27     
+    multi_voice=Rfl|Pass: 20     
+    multi_voice=Caus|Rfl|Pass: 2 
+
+  Множественные залоги (отд. CSV): 2,480
+  Удалённые предложения (CSV):   
+  33,718
+
+✅ Конвертация завершена!
+   Вход:  C:\Diploma\morphology\services\datasets\kazakh\NLANU\kdt-NLANU-0.01.connlu
+   Выход: C:\Diploma\morphology\services\datasets\kazakh\NLANU\kdt-NLANU-ud.conllu
